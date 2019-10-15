@@ -10,6 +10,7 @@ class Table extends Model
     protected $fillable = [
         'status', 'place'
     ];
+    protected $relationMethods;
     public function transaction()
     {
         return $this->hasOne('App\Transaction')->latest('created_at');

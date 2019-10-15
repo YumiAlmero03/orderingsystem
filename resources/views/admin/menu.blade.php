@@ -1,4 +1,4 @@
-@extends('costumer.layout')
+@extends('layouts.app')
 
 @section('content')
 <table>

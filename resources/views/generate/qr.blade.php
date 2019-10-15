@@ -2,7 +2,7 @@
 
 @section('content')
 {!!$qr!!}
-user:{{$transaction['username']}}
-pass:{{$password}}
-pass:{{$transaction['table_id']}}
+UserID:{{$transaction['username']}}
+Password:{{$password}}
+Table:{{$transaction['table_id']}}
 @endsection

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Transaction;
-
+use App\Table;
+use Response;
 class ApiController extends Controller
 {
     //
@@ -13,5 +14,9 @@ class ApiController extends Controller
     	$data = Transaction::find($id);
     	$stats = $data->status;	
     	return response()->json([$stats]);
+    }
+    public function getCostumers()
+    {
+    	return response(Table::all()->jsonSerialize());
     }
 }

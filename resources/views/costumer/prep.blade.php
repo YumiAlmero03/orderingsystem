@@ -1,24 +1,32 @@
 @extends('costumer.layout')
 
 @section('content')
-<h1> Thank you!</h1>
-<h2>Please wait for your order</h2>
-<div class="timer">
-	
-	<p class="change-order ">You can change your order in 5 mins.</p>
-	<form class="change-order" method="POST" action="/reorder" >
-		@csrf
-		<input type="submit" class="change-order btn btn-outline-secondary" name="submit" value="Change Order">
-		<input type="hidden" name="id" value="{{$order->id}}">
-	</form>
+<div class="card">
+	<div class="card-header">
+		<h2> Thank you!</h2>
+		<h3>Please wait for your order</h3>
+	</div>
+	<div class="card-body">
+		<div class="timer">	
+			<p class="change-order ">You can change your order in 5 mins.</p>
+			<form class="change-order" method="POST" action="/reorder" >
+				@csrf
+				<input type="submit" class="change-order btn btn-outline-secondary" name="submit" value="Change Order">
+				<input type="hidden" name="id" value="{{$order->id}}">
+			</form>
+		</div>
+		<p>ET: <span id="demo"></span></p>
+		<p>Status: <span id="stats">{{$order->status}}</span></p>
+	</div>
+	<div class="card-footer">
+		<p>While you wait, please participate in our survey: <a href="test.com" target="_blank"><button class=" btn btn-secondary ">Survey</button></a></p>
+	</div>
 </div>
-<p>ET: <span id="demo"></span></p>
-<p>Status: <span id="stats">{{$order->status}}</span></p>
 @endsection
 
 @section('script')
 // Set the date we're counting down to
-var countDownDate = new Date("{{Carbon\Carbon::now()->addMinutes(20)}}").getTime();//"Aug 14, 2019 15:37:25"
+var countDownDate = new Date("{{Carbon\Carbon::parse("$order->order_at")->addMinutes(20)}}").getTime();//"Aug 14, 2019 15:37:25"
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -45,7 +53,7 @@ var x = setInterval(function() {
 	}
   if (distance < 0) {
     clearInterval(x);
-    document.getElementById("demo").innerHTML = "Done";
+    document.getElementById("demo").innerHTML = "Please Wait";
   }
 }, 1000);
 var xmlhttp = new XMLHttpRequest();

@@ -19,4 +19,12 @@ class Menu extends Model
     	$users = $query->inRandomOrder()->first();
     	return $users->name;
     }
+    public function order()
+    {
+        return $this->hasMany('App\Order');
+    }
+    public function getQuantity($id, $cat)
+    {
+        return $this->order()->where(['transaction_id' => $id, 'category_id' => $cat])->orderBy('id', 'desc')->first()->quantity;
+    }
 }

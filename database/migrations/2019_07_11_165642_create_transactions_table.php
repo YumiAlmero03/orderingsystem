@@ -22,6 +22,7 @@ class CreateTransactionsTable extends Migration
             $table->string('table_id');
             $table->string('price')->nullable();
             $table->string('orders')->nullable();
+            $table->timestamp('order_at')->nullable();
             $table->timestamps();
         });
     }

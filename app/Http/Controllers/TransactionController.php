@@ -8,6 +8,7 @@ use App\Order;
 use App\Menu;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReserveValidate;
+use Carbon;
 
 class TransactionController extends Controller
 {
@@ -42,6 +43,7 @@ class TransactionController extends Controller
         $transaction = Transaction::find($request->id);
         $feats = Menu::where('feat', 1)->get();
         $transaction->changeStatus('reordering');
+     
         return view('costumer/menu', ['menus'=>$menus, 'id'=>$transaction, 'feats'=>$feats]);
     }
 
@@ -58,6 +60,8 @@ class TransactionController extends Controller
         //$order->orders = $orders;
 
         $order->price = $request->price;
+        $date = Carbon\Carbon::now();
+        $order->order_at = $date;
         $order->changeStatus('recording');
         return view('costumer/prep', ['order' => $order]);
     }

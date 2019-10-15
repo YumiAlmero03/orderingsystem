@@ -17,7 +17,7 @@ Route::get('/', function () {
 Route::get('/generate-code', 'GenerateController@display');
 //order stage
 Route::post('/order', 'TransactionController@stageone');
-Route::post('/reorder', 'TransactionController@reorder');
+Route::post('/reorder', 'TransactionController@reorder')->name('reorder');
 Route::post('/preparing', 'TransactionController@stagetwo');
 Route::get('/done/{id}', function () {
     return view('costumer/done');

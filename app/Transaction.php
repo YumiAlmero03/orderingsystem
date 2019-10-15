@@ -10,7 +10,7 @@ class Transaction extends Model
     //
     
     protected $fillable = [
-        'username', 'pass', 'status', 'table_id', 'orders'
+        'username', 'pass', 'status', 'table_id', 'orders', 'order_at'
     ];
     protected $hidden = [
         'pass'
@@ -39,4 +39,5 @@ class Transaction extends Model
         $table->save();
     	return $this->status;
     }
+    
 }

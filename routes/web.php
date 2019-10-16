@@ -19,9 +19,8 @@ Route::get('/generate-code', 'GenerateController@display');
 Route::post('/order', 'TransactionController@stageone');
 Route::post('/reorder', 'TransactionController@reorder')->name('reorder');
 Route::post('/preparing', 'TransactionController@stagetwo');
-Route::get('/done/{id}', function () {
-    return view('costumer/done');
-})->name('done');
+Route::get('/done/{id}', 'TransactionController@stagethree')->name('done');
+Route::get('/testdb', 'TransactionController@test')->name('test');
 
 //admin
 Route::post('/status-change', 'AdminController@changeStatus');

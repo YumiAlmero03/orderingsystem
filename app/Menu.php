@@ -25,6 +25,6 @@ class Menu extends Model
     }
     public function getQuantity($id, $cat)
     {
-        return $this->order()->where(['transaction_id' => $id, 'category_id' => $cat])->orderBy('id', 'desc')->first()->quantity;
+        return $this->order()->where(['transaction_id' => $id, 'category_id' => $cat])->orderBy('id', 'desc')->first();
     }
 }

@@ -9,6 +9,7 @@ use App\Menu;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReserveValidate;
 use Carbon;
+use PDO;
 
 class TransactionController extends Controller
 {
@@ -23,12 +24,14 @@ class TransactionController extends Controller
                 // dd($feats);
                 $transaction = Transaction::where('username', $request->username)->first();
                 $transaction->changeStatus('ordering');
-                if ($transaction->status == "recording" ) {
-                    return view('costumer/prep', ['order' => $transaction]);
+                if ($transaction->status == "ordering" || $transaction->status == "reordering" ) {
+                    return view('costumer/menu', ['menus'=>$menus, 'id'=>$transaction, 'feats'=>$feats]);
                 } elseif ($transaction->status == "done" ) {
                     $fail = 'Transaction is Completed';
+                } elseif ($transaction->status == "recording" || $transaction->status == "cooking" || $transaction->status == "preparing" ) {
+                    return view('costumer/prep', ['order' => $transaction]);
                 }
-                return view('costumer/menu', ['menus'=>$menus, 'id'=>$transaction, 'feats'=>$feats]);
+                return view('costumer/done', ['order' => $transaction]);
             }
             $fail = 'Incorrect Password';
         } else {
@@ -55,15 +58,20 @@ class TransactionController extends Controller
         foreach ($request->order as $key => $value) {
             array_push($orders, $value);
         }
-        Order::insert($orders);
-        //dd($order->order);
-        //$order->orders = $orders;
-
+        Order::updateOrCreate($orders);
         $order->price = $request->price;
         $date = Carbon\Carbon::now();
         $order->order_at = $date;
         $order->changeStatus('recording');
         return view('costumer/prep', ['order' => $order]);
     }
+
+    public function stagethree($id)
+    {
+        //
+        $order = Transaction::find($id);
+        return view('costumer/done', ['order' => $order]);
+    }
+
     
 }

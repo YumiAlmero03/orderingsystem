@@ -40,6 +40,14 @@
 					<input type="hidden" name="status" value="eating">
 				@break
 				@case('eating')
+					<a href=""><button type="submit" class="btn btn-primary">Bill-Out</button></a>
+					<input type="hidden" name="status" value="billout">
+				@break
+				@case('billout')
+					<a href=""><button type="submit" class="btn btn-primary">Paid</button></a>
+					<input type="hidden" name="status" value="paid">
+				@break
+				@case('paid')
 					<a href=""><button type="submit" class="btn btn-primary">Done</button></a>
 					<input type="hidden" name="status" value="done">
 				@break

@@ -57,7 +57,7 @@
 										@else 0
 									@endif">
 										@if(Request::is('reorder'))
-											<input type="hidden" name="order['f{{$feat->id}}'][id]" value="{{$feat->getQuantity($id->id, 0)->id">
+											<input type="hidden" name="order['f{{$feat->id}}'][id]" value="{{$feat->getQuantity($id->id, 0)->id}}">
 										@endif
 										<div class="inc button btn btn-primary">+</div>
 									</div>
@@ -113,7 +113,7 @@
 									@else 0
 									@endif">
 									@if(Request::is('reorder'))
-										<input type="hidden" name="order['f{{$feat->id}}'][id]" value="{{$order->getQuantity($id->id, $menu->id)->id">
+										<input type="hidden" name="order['f{{$feat->id}}'][id]" value="{{$order->getQuantity($id->id, $menu->id)->id}}">
 									@endif
 									<div class="inc button btn btn-primary">+</div>
 								</div>

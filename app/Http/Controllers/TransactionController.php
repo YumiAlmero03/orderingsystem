@@ -58,7 +58,9 @@ class TransactionController extends Controller
         foreach ($request->order as $key => $value) {
             array_push($orders, $value);
         }
-        Order::updateOrCreate($orders);
+        //
+            Order::insert($orders);
+        
         $order->price = $request->price;
         $date = Carbon\Carbon::now();
         $order->order_at = $date;
@@ -73,5 +75,9 @@ class TransactionController extends Controller
         return view('costumer/done', ['order' => $order]);
     }
 
+    public function test()
+    {
+        return"test";
+    }
     
 }

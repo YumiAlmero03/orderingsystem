@@ -7,12 +7,12 @@
 		<h3>Please wait for your order</h3>
 	</div>
 	<div class="card-body">
-		<div class="timer">	
+		<div class="timer">
 			<p class="change-order ">You can change your order in 5 mins.</p>
 			<form class="change-order" method="POST" action="/reorder" >
 				@csrf
 				<input type="submit" class="change-order btn btn-outline-secondary" name="submit" value="Change Order">
-				<input type="hidden" name="id" value="{{$order->id}}">
+				<input type="hidden" name="username" value="{{$order->username}}">
 			</form>
 		</div>
 		<p>ET: <span id="demo"></span></p>
@@ -47,7 +47,7 @@ var x = setInterval(function() {
   document.getElementById("demo").innerHTML = hours + "h "
   + minutes + "m " + seconds + "s ";
 
-  // If the count down is finished, write some text 
+  // If the count down is finished, write some text
   	if(minutes == 15){
 	  $(".change-order").remove();
 	}
@@ -70,8 +70,8 @@ xmlhttp.onreadystatechange = function(){
 	}
 };
 setInterval(function(){
-	
-	xmlhttp.open("GET", "{{route('apistat', ['id' => $order->id])}}", true)
+
+	xmlhttp.open("GET", "{{secure_url(route('apistat', ['id' => $order->id]))}}", true)
 	xmlhttp.send();
 
 }, 1000);

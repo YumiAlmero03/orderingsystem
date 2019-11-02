@@ -13,7 +13,7 @@ use Carbon\Carbon;
 
 class GenerateController extends Controller
 {
-	
+
     public function display()
     {
 
@@ -22,13 +22,13 @@ class GenerateController extends Controller
         $table = Table::available()->id;
         $transaction = Transaction::create([
             'username'=> $username,
-            'pass'=> encrypt($pass),
+            'pass'=> Hash::make($pass),
             'status'=> 'reserve',
             'table_id'=> $table
         ]);
-    	$qr = QrCode::size(100)->generate('APP_URL/login/'.$username.'/'.$pass);
+    	$qr = QrCode::size(100)->generate(env('APP_URL').'/qrto/'.encrypt($username).'/'.encrypt($pass));
     	return view('generate.qr', [
-    		'qr' => $qr, 
+    		'qr' => $qr,
     		'transaction'=>$transaction,
     		'password'=>$pass
     	]);

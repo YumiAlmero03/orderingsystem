@@ -4,11 +4,24 @@ image:
 ports:
   - port: 8001
     onOpen: ignore
+  - port: 8000
+    onOpen: open-browser
+  - port: 443
+    onOpen: open-browser
   - port: 3306
     onOpen: ignore
 tasks:
   - init: composer install
-    command: echo "Hallo"
+    command: npm install
+  - name: Create_sql
+    command: >
+        mysql
+        GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
+        CREATE DATABASE student_portal;
+        exit
+
+        php artisan key:generate
+        php artisan migrate --seed
   - name: MySQL
     command: >
         mysqld

@@ -5,6 +5,8 @@
 /vendor
 .env
 .phpunit.result.cache
+.gitpod.yml
+.gitpod.Dockerfile
 Homestead.json
 Homestead.yaml
 npm-debug.log

@@ -1,0 +1,29 @@
+.btn{
+	border-radius: 0;
+}
+.fixed{
+	position:sticky;
+	top: 0;
+	z-index: 1;
+}
+.order-category h2{
+	text-transform: capitalize;
+}
+
+.order-category .card-header{
+	background: none;
+    border: none;
+}
+.card-footer .form-group .form-control{
+	display: inline;
+	max-width: 100px;
+	width: auto;
+}
+.center{
+	text-align:center;
+	margin: auto;
+}
+.box{
+	max-width: 1000px;
+	width: 100%;
+}

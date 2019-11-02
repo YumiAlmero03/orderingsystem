@@ -16,7 +16,7 @@
 	<tr>
 		<td>{{$table->id}}</td>
 		<td>{{$table->transaction['username']}}</td>
-		<td>{{$table->status}}</td>
+		<td>{{$table->transaction['status']}}</td>
 		<td>{{$table->place}}</td>
 		<td>
 			<form id="table-status" method="POST" action="/status-change">
@@ -63,7 +63,7 @@
 				<button class="btn btn-secondary delete" type="submit">Delete</button></td>
 			</form>
 		</td>
-	</tr>	
+	</tr>
 	@endforeach
 </table>
 	@include('admin/form-table')

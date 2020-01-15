@@ -22,7 +22,7 @@
 			<input type="hidden" name="status" value="billout">
 		</form>
 		You can also participate in our survey
-		<a href=""><button class="btn btn-outline-primary">Survey</button></a>
+		<a href="https://docs.google.com/forms/d/e/1FAIpQLSdMZDhIoExab9U4WffylVR-rhJClr8Rovjr1-Znj-u45s3wxg/viewform?usp=sf_link" target="_blank"><button class="btn btn-outline-primary">Survey</button></a>
 	</div>
 </div>
 <!-- Modal -->
@@ -57,7 +57,7 @@
 	      		<td>{{$order->price}}</td>
 	      	</tr>
       	</table>
-      	
+
       </div>
       <div class="modal-footer">
       </div>

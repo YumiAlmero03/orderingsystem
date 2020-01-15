@@ -19,7 +19,7 @@
 		<p>Status: <span id="stats">{{$order->status}}</span></p>
 	</div>
 	<div class="card-footer">
-		<p>While you wait, please participate in our survey: <a href="test.com" target="_blank"><button class=" btn btn-secondary ">Survey</button></a></p>
+		<p>While you wait, please participate in our survey: <a href="https://docs.google.com/forms/d/e/1FAIpQLSdMZDhIoExab9U4WffylVR-rhJClr8Rovjr1-Znj-u45s3wxg/viewform?usp=sf_link" target="_blank"><button class=" btn btn-secondary ">Survey</button></a></p>
 	</div>
 </div>
 @endsection

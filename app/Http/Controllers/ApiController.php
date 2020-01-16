@@ -12,11 +12,11 @@ class ApiController extends Controller
     public function costumerStatus($id)
     {
     	$data = Transaction::find($id);
-    	$stats = $data->status;	
+    	$stats = $data->status;
     	return response()->json([$stats]);
     }
     public function getCostumers()
     {
-    	return response(Table::all()->jsonSerialize());
+    	return response(Table::all()->toJSON());
     }
 }

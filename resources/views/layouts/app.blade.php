@@ -75,9 +75,10 @@
         </nav>
 
         <main class="py-4">
+        @include('layouts/message')
             <div class="container center">
                 <div class="box center">
-            @yield('content')
+                    @yield('content')
                 </div>
             </div>
         </main>
@@ -85,38 +86,7 @@
 </body>
 <script src="{{ mix('js/app.js') }}"></script>
 <script>
-$(document).ready( function () {
-    var table = $('#costumer-table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax": {
-                "url" : 'https://8001-e95be19b-2f27-4bd8-8195-659118abe105.ws-ap01.gitpod.io/api/costumers',
-                "dataSrc": ''
-            },
-            "columns":[
-                {"data" : 'status'},
-                {"data" : 'action',
-                    "searchable": false,
-                    "orderable":false,
-                    "render": function (data, type, row) {
-                        if ({data:"status"} === 'done') {
-                            return '<img src="image/valid.png" style="width:15px" />';}
-                            else {
-                                return '<img src="image/error.png" style="width:15px" />';
-                            }
-                        }
-                },
-
-                {"data" : 'status'},
-
-                {"data" : 'status'},
-
-                {"data" : 'status'},
-            ]
-
-        }
-    );
-} );
+@yield('script')
 
 </script>
 </html>

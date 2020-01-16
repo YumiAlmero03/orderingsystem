@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon;
 use App\Menu;
 use Illuminate\Http\Request;
+use App\Http\Requests\MenuRequest;
 class MenuController extends Controller
 {
     /**
@@ -15,9 +16,9 @@ class MenuController extends Controller
     // protected $maxAttempts = 3;
     public function index()
     {
-        return view('admin/Menu', ['tables'=>Menu::all()]);
+        return view('admin/menu', ['tables'=>Menu::all()]);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,10 +36,14 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MenuRequest $request)
     {
         //
+        $imageName = time().'.'.$request->pic->getClientOriginalExtension();
+        $request->pic->move(public_path('img'), $imageName);
+        $request->pic = $imageName;
         $task = Menu::create($request->all());
+
         return back()->with('success', 'Menu Added');
     }
 
@@ -60,9 +65,9 @@ class MenuController extends Controller
      * @param  \App\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function edit(Menu $menu)
+    public function edit(Menu $menu, $food)
     {
-        //
+        return view('admin/menu-edit', ['menu'=>$this->show($food)]);
     }
 
     /**
@@ -72,9 +77,18 @@ class MenuController extends Controller
      * @param  \App\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Menu $menu)
+    public function update(MenuRequest $request, Menu $menu, $food)
     {
-        //
+        $menu = $this->show($menu);
+        $imageName = time().'.'.$request->pic->getClientOriginalExtension();
+        $request->pic->move(public_path('img'), $imageName);
+        $menu->pic = $imageName;
+        $menu->name = $request->name;
+        $menu->desc = $request->desc;
+        $menu->price = $request->price;
+        $menu->category_id = $request->category_id;
+
+        return back()->with('success', 'Menu Added');
     }
 
     /**

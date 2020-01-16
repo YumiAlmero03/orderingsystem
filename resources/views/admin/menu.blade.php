@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<table>
+<table  class="table table-striped table-bordered">
 	<tr>
 		<th>ID</th>
 		<th>Name</th>
@@ -47,7 +47,7 @@
 			</form>
 		</td>
 		<td>
-			<button class="btn btn-secondary edit">Edit</button>
+			<a href="{{route('food.edit',['food'=>$table->id])}}"><button class="btn btn-secondary edit">Edit</button></a>
 		</td>
 		<td>
 			<form action="{{route('food.remove')}}" method="POST">
@@ -56,7 +56,7 @@
 				<button class="btn btn-secondary delete" type="submit">Delete</button>
 			</form>
 		</td>
-	</tr>	
+	</tr>
 	@endforeach
 </table>
 	@include('admin/form-menu')

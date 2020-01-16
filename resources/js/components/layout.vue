@@ -1,21 +1,23 @@
 <template>
 	<div id="dash">
-		<table>
+		<table id="costumer-table">
 			<tr>
 				<th>ID</th>
+                <th>status</th>
 			</tr>
 			<table-component v-for="table in tables" v-bind="table" :key="table.id"></table-component>
 		</table>
 	</div>
 </template>
 <script>
+
 	function Table({status, id}) {
 		this.status = status;
 		this.id = id;
 	}
 	import TableComponent from './tableComponent.vue';
 
-	export default {		
+	export default {
 		data() {
 			return {
 				tables: [],
@@ -36,6 +38,10 @@
 		},
 		mounted() {
 			this.read();
+            this.interval = setInterval(function () {
+                this.read();
+            }.bind(this), 36000);
+
 		},
 
 		components: {

@@ -26,7 +26,7 @@ class GenerateController extends Controller
             'status'=> 'reserve',
             'table_id'=> $table
         ]);
-    	$qr = QrCode::size(100)->generate(env('APP_URL').'/qrto/'.encrypt($username).'/'.encrypt($pass));
+    	$qr = QrCode::size(100)->generate(env('APP_URL').'/qrto/'.$username.'/'.$pass);
     	return view('generate.qr', [
     		'qr' => $qr,
     		'transaction'=>$transaction,

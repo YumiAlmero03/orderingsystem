@@ -1,5 +1,7 @@
 @extends('costumer.layout')
-
+@section('title')
+Order Status: {{$order->status}}
+@endsection
 @section('content')
 <div class="card">
 	<div class="card-header">
@@ -61,7 +63,8 @@ xmlhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
 		var myObj = JSON.parse(this. responseText);
 		document.getElementById("stats").innerHTML = myObj;
-		if(myObj == "serving"){
+		document.getElementById("title").innerHTML = "Order Status: "+myObj;
+		if(myObj == "serving" && myObj == "serving"){
 			window.location.replace('{{route('done', ['id' => $order->id])}}');
 		}
 		if(myObj == "cooking"){

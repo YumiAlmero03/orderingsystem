@@ -18,6 +18,7 @@
 </head>
 <body>
     <div id="ap">
+    <input type="hidden" name="csrf" id="csrf" value="{{ csrf_token() }}">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">

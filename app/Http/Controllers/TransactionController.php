@@ -31,8 +31,8 @@ class TransactionController extends Controller
     }
     public function qrRetrive($userid,$pass)
     {
-        $userid = decrypt($userid);
-        $pass = decrypt($pass);
+        $userid = $userid;
+        $pass = $pass;
         $transaction = Transaction::where('username', $userid)->first();
         if ($transaction->exists()){
             if (Hash::check($pass, $transaction->pass)) {

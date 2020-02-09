@@ -1,5 +1,7 @@
 @extends('costumer.layout')
-
+@section('title')
+  Thank You!
+@endsection
 @section('content')
 <div class="card">
 	<div class="card-header">

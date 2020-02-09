@@ -1,5 +1,7 @@
 @extends('costumer.layout')
-
+@section('title')
+	Pick Your Order
+@endsection
 @section('content')
 	<form method="POST" action="/preparing">
 		@csrf
@@ -16,7 +18,7 @@
 		<h2>Total Price: <span class="price-order"></span></h2>
 
 		<div class="accordion" id="accordionExample">
-			<div class="card">
+			<div class="card menu-cat">
 				@if($feats->count())
 			  	<a class="btn-link btn order-category btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapsefeat" aria-expanded="true" aria-controls="collapsefeat">
 				    <div class="card-header" id="headingfeat">
@@ -73,7 +75,7 @@
 		    </div>
 		  @foreach ($menus as $menu)
 		  @if($menu->menus->count() )
-		  <div class="card">
+		  <div class="card menu-cat" >
 			<a class="btn-link btn order-category btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse{{$menu->id}}" aria-expanded="true" aria-controls="collapse{{$menu->id}}">
 			    <div class="card-header" id="heading{{$menu->id}}">
 			      <h2 class="mb-0">

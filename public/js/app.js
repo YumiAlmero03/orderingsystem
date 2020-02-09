@@ -64444,9 +64444,9 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /workspace/orderingsystem/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /workspace/orderingsystem/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /workspace/orderingsystem/resources/sass/style.scss */"./resources/sass/style.scss");
+__webpack_require__(/*! E:\projects\orderingsystem\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! E:\projects\orderingsystem\resources\sass\app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! E:\projects\orderingsystem\resources\sass\style.scss */"./resources/sass/style.scss");
 
 
 /***/ })

@@ -7,7 +7,7 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ mix('css/style.css') }}" rel="stylesheet" type="text/css">
 
-	<title>
+	<title id="title">
 		@yield('title')
 	</title>
 </head>

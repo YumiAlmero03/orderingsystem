@@ -82,8 +82,13 @@ class RequestController extends Controller
      * @param  \App\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function destroy(Request $request)
     {
         //
+        $id = $request->id;
+        $task = Demand::find($id);
+        Demand::destroy($id);
+        return back()->with('success', 'Request Done');
     }
 }

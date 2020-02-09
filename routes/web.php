@@ -35,5 +35,6 @@ Route::resource('category', 'CategoryController');
 Route::post('category/destroy', 'CategoryController@destroy')->name('category.remove');
 Route::post('table/destroy', 'TableController@destroy')->name('table.remove');
 Route::post('food/destroy', 'MenuController@destroy')->name('food.remove');
+Route::post('request/destroy', 'RequestController@destroy')->name('request.remove');
 Route::post('food/feat', 'MenuController@feat')->name('food.feat');
 Route::post('food/active', 'MenuController@active')->name('food.availability');

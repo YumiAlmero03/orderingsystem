@@ -33,11 +33,14 @@ class Transaction extends Model
     }
     public function changeStatus($status)
     {
-    	$this->status = $status;
-    	$this->save();
         $table = Table::find($this->table_id);
         $table->status = $status;
         $table->save();
+        $this->status = $status;
+        if ($status === 'done') {
+            $this->table_id = NULL;
+        }
+    	$this->save();
     	return $this->status;
     }
 

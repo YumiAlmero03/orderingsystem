@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="ap">
@@ -40,7 +40,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                            
+
                         @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('table.index') }}">{{ __('Table') }}</a>
@@ -75,13 +75,18 @@
         </nav>
 
         <main class="py-4">
-            <div class="container-fluid center">
+        @include('layouts/message')
+            <div class="container center">
                 <div class="box center">
-            @yield('content')
+                    @yield('content')
                 </div>
             </div>
         </main>
     </div>
 </body>
 <script src="{{ mix('js/app.js') }}"></script>
+<script>
+@yield('script')
+
+</script>
 </html>

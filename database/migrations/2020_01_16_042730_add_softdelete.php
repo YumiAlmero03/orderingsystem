@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRequestsTable extends Migration
+class AddSoftdelete extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('table_id');
-            $table->string('content');
-            $table->string('status')->default('new');
-            $table->timestamps();
+        Schema::table('requests', function (Blueprint $table) {
+            //
+            $table->softDeletes();
         });
     }
 
@@ -29,6 +26,8 @@ class CreateRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requests');
+        Schema::table('request', function (Blueprint $table) {
+            //
+        });
     }
 }

@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     //
-    
+    protected $relationMethods;
+    protected $with = ['order'];
     protected $fillable = [
         'username', 'pass', 'status', 'table_id', 'orders', 'order_at'
     ];
     protected $hidden = [
         'pass'
     ];
-    protected $casts = [        
+    protected $casts = [
         'orders' => 'array'
     ];
     public function table()
@@ -39,5 +40,5 @@ class Transaction extends Model
         $table->save();
     	return $this->status;
     }
-    
+
 }

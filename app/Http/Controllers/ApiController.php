@@ -19,4 +19,8 @@ class ApiController extends Controller
     {
     	return response(Table::all()->jsonSerialize());
     }
+    public function getCostumer($id)
+    {
+    	return response(Transaction::find($id)->toJSON());
+    }
 }

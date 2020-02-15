@@ -23,6 +23,11 @@ class Menu extends Model
     {
         return $this->hasMany('App\Order');
     }
+    public function orderByDate($date, $cat)
+    {
+
+        return $this->hasMany('App\Order')->whereDate('created_at', '=', $date);
+    }
     public function getQuantity($id, $cat)
     {
         return $this->order()->where(['transaction_id' => $id, 'category_id' => $cat])->orderBy('id', 'desc')->first();

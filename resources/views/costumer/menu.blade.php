@@ -56,6 +56,8 @@
 										<input type="hidden" name="order['f{{$feat->id}}'][category_id]" value="0">
 										<input type="hidden" class="price" value="{{$feat->price}}">
 										<input type="hidden" name="order['f{{$feat->id}}'][menu_id]" value="{{$feat->id}}">
+
+		                                <input type="hidden" name="order['f{{$feat->id}}'][updated_at]" value="{{Carbon\Carbon::now()}}">
 										<input class="form-control orders" type="text" name="order['f{{$feat->id}}'][quantity]" id="{{$feat->name}}_{{$feat->id}}" value="@if($reorder==1) {{$feat->getQuantity($id->id, 0)->quantity}}
 										@else 0
 									@endif">
@@ -111,6 +113,8 @@
 									<input type="hidden" name="order[{{$menu->id}}{{$order->id}}][feature]" value="0">
 									<input type="hidden" name="order[{{$menu->id}}{{$order->id}}][category_id]" value="{{$menu->id}}">
 									<input type="hidden" class="price" value="{{$order->price}}">
+		                                <input type="hidden" name="order[{{$menu->id}}{{$order->id}}][updated_at]" value="{{Carbon\Carbon::now()}}">
+
 									<input type="hidden" name="order[{{$menu->id}}{{$order->id}}][menu_id]" value="{{$order->id}}">
 									<input class="form-control orders" type="text" name="order[{{$menu->id}}{{$order->id}}][quantity]" id="{{$menu->name}}_{{$order->id}}" value="@if($reorder==1) {{$order->getQuantity($id->id, $menu->id)->quantity}}
 									@else 0

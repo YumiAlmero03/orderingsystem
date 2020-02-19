@@ -30,4 +30,8 @@ class ApiController extends Controller
     {
         return Demand::all()->toJSON();
     }
+    public function getCostumer($id)
+    {
+    	return response(Transaction::find($id)->toJSON());
+    }
 }

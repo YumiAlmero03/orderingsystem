@@ -9,6 +9,7 @@ class Transaction extends Model
 {
     //
     protected $relationMethods;
+    protected $with = ['order'];
     protected $fillable = [
         'username', 'pass', 'status', 'table_id', 'orders', 'order_at'
     ];

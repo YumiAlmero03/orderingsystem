@@ -1,5 +1,12 @@
 <form method="POST" action="{{route('category.store')}}">
 	@csrf
-	<input type="text" name="name" placeholder="Category Name">
-	<input type="submit" name="submit" value="Add">
+    <div class="form-group row">
+        <div class="col-sm-5">
+	        <input type="text" name="name" class="form-control" placeholder="Category Name">
+	    </div>
+
+        <div class="col-sm-5">
+            <input type="submit" class="btn btn-primary" name="submit" value="Add">
+        </div>
+    </div>
 </form>

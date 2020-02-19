@@ -17,7 +17,7 @@ class MenuController extends Controller
     // protected $maxAttempts = 3;
     public function index()
     {
-        
+
         return view('admin/menu', ['tables'=>Menu::all(),'cats'=>Category::all()]);
     }
 
@@ -42,9 +42,18 @@ class MenuController extends Controller
     {
         //
         $imageName = time().'.'.$request->pic->getClientOriginalExtension();
+
         $request->pic->move(public_path('img'), $imageName);
         $request->pic = $imageName;
-        $task = Menu::create($request->all());
+
+        $task = Menu::create([
+            'name'=>$request->name,
+            'desc'=>$request->desc,
+            'price'=>$request->price,
+            'pic'=>$imageName,
+            'feat'=>0,
+            'category_id'=>$request->category_id,
+            'active'=>1]);
 
         return back()->with('success', 'Menu Added');
     }
@@ -81,16 +90,20 @@ class MenuController extends Controller
      */
     public function update(MenuRequest $request, Menu $menu, $food)
     {
-        $menu = $this->show($menu);
-        $imageName = time().'.'.$request->pic->getClientOriginalExtension();
-        $request->pic->move(public_path('img'), $imageName);
-        $menu->pic = $imageName;
+        $menu = $this->show($food);
+        if($request->pic){
+            $imageName = time().'.'.$request->pic->getClientOriginalExtension();
+            $request->pic->move(public_path('img'), $imageName);
+            $menu->pic = $imageName;
+        }
+
+        //dd($menu);
         $menu->name = $request->name;
         $menu->desc = $request->desc;
         $menu->price = $request->price;
         $menu->category_id = $request->category_id;
-
-        return back()->with('success', 'Menu Added');
+        $menu->save();
+        return back()->with('success', 'Menu Updated');
     }
 
     /**

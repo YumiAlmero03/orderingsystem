@@ -1,10 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#orderModal">
+Add Menu
+</button>
 <table  class="table table-striped table-bordered">
 	<tr>
 		<th>ID</th>
 		<th>Name</th>
+		<th>Category</th>
 		<th>Feature</th>
 		<th>Availability</th>
 		<th>Edit</th>
@@ -60,7 +64,25 @@
 	</tr>
 	@endforeach
 </table>
-	@include('admin/form-menu')
+
+    <!-- Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderModalLabel">Add Menu <span id="orderModalUsername"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            @include('admin/form-menu')
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('script')

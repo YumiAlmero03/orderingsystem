@@ -8,7 +8,7 @@
 	<input type="text" name="price" placeholder="Menu Price" value="{{$menu->price}}">
 	<textarea placeholder="Menu Description" name="desc">{{$menu->desc}}</textarea>
     <input type="file" name="pic" class="form-control" >
-    <img src="{{asset('/img/'.$menu->pic)}}">
+    <img src="{{asset('/img/'.$menu->pic)}}" width="200px">
     <p>Category:</p>
 	<select name="category_id">
 		<option value="1">Rice</option>

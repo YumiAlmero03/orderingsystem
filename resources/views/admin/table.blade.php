@@ -2,6 +2,8 @@
 
 @section('content')
 
+	@include('admin/form-table')
+
 <table  class="table table-striped table-bordered">
 	<tr>
 		<th>Table</th>
@@ -24,7 +26,6 @@
 	</tr>
 	@endforeach
 </table>
-	@include('admin/form-table')
 @endsection
 
 @section('script')

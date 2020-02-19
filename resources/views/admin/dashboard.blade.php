@@ -4,13 +4,14 @@
 
 <div class="row">
     <div class="col">
-        <table id="costumer-table" class="table table-striped table-bordered">
+        <table id="table" class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>Table</th>
                     <th>Costumer</th>
                     <th>Status</th>
                     <th>Action</th>
+                    <th>Orders</th>
                     <th>Void</th>
                 </tr>
 
@@ -62,9 +63,18 @@
                 <td>
                     @if($table->status === 'done' || $table->status === 'void')
                     @else
+                        <button class="transaction btn btn-primary" type="button" data-id="{{$table->id}}" data-toggle="modal" data-target="#orderModal">
+                            Orders
+                        </button>
+                    @endif
+                </td>
+                <td>
+                    @if($table->status === 'done' || $table->status === 'void')
+                    @else
                     <a href="{{route('void', ['id'=> $table->transaction['id']])}}"><button type="submit" class="btn btn-primary">Void</button></a>
                     @endif
                 </td>
+
             </tr>
             @endforeach
             </tbody>
@@ -75,19 +85,83 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderModalLabel">Order: <span id="orderModalUsername"></span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<table border="0">
+            <tr>
+                <th>Menu</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+            <tbody id="orderModalOrders">
 
+            </tbody>
+	      	<tr>
+	      		<th>Total:</th>
+	      		<td id="orderModalPrice"></td>
+	      	</tr>
+      	</table>
+
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('script')
 
 $(document).ready( function () {
-    var table = $('#costumer-table').DataTable({
+
+
+
+ var table = $('#table').DataTable({
             "processing": true,
             "serverSide": true,
             "paging":   false,
         "ordering": false,
         "info":     false,
         "search": false,
+        "initComplete": function(settings, json) {
+            $('button.transaction').click(function() {
+
+                id = $(this).data('id');
+                console.log(id);
+                var flickerAPI = "{{route('apicostumers')}}/"+id;
+                $('#orderModalOrders').text("");
+                $.getJSON( flickerAPI, {
+                    tags: "mount rainier",
+                    tagmode: "any",
+                    format: "json"
+                })
+                .done(function( data ) {
+                    console.log(data);
+                    $('span#orderModalUsername').text(data.username);
+                    $('td#orderModalPrice').text(data.price);
+                    $.each( data.order, function( i, item ) {
+                        if(item.quantity != 0){
+                            $( "<tr>" ).appendTo( "#orderModalOrders" );
+                            $( "<td>" ).text( item.menu.name ).appendTo( "#orderModalOrders" );
+                            $( "<td>" ).text( item.quantity ).appendTo( "#orderModalOrders" );
+                            $( "<td>" ).text( item.menu.price ).appendTo( "#orderModalOrders" );
+                            $( "<td>" ).text( item.menu.price * item.quantity ).appendTo( "#orderModalOrders" );
+                            $( "</tr>" ).appendTo( "#orderModalOrders" );
+                        }
+                    });
+                });
+            });
+        },
         "bFilter": false,
             "ajax": {
                 "url" : '/api/costumers',
@@ -97,7 +171,7 @@ $(document).ready( function () {
                 {"data" : 'table.id'},
                 {"data" : 'table.transaction',
                 "render" : function(data, type, row){
-                        if(!data || data.status === 'done'){
+                        if(!data || data.status === 'done' || data.status === 'void'){
                             return '';
                         } else {
                             return data.username;
@@ -106,14 +180,14 @@ $(document).ready( function () {
                 },
                 {"data" : 'table.transaction.status',
                 "render" : function(data, type, row){
-                        if(!data || data === 'done'){
+                        if(!data || data === 'done' || data === 'void'){
                             return '';
                         } else {
                             return data;
                         }
                     }
                 },
-                
+
                 {"data" : 'table',
                     "searchable": false,
                     "orderable":false,
@@ -154,6 +228,10 @@ $(document).ready( function () {
                                     $title = 'Wait';
                                     $next = 'done';
                                     break;
+                                case 'manual':
+                                    $title = 'Wait';
+                                    $next = 'Manual';
+                                    break;
                                 default:
                                     $title = 'Wait';
                                     break;
@@ -161,9 +239,13 @@ $(document).ready( function () {
                             if ($title != 'Wait') {
 
                                 return '<form id="table-status" method="POST" action="/status-change">'+'@csrf'+'<input type="hidden" name="id" value="'+data.transaction.id+'"><a href=""><button type="submit" class="btn btn-primary">'+$title+'</button></a><input type="hidden" name="status" value="'+$next+'"></form>';
-                            } else {
+                            }
+                            else if ($next === 'Manual') {
+                                return 'Manual';
+                            }
+                            else {
                                 return $title;
-                            } 
+                            }
                         } else {
                             return 'Wait';
                         }
@@ -174,22 +256,34 @@ $(document).ready( function () {
                     if(data.transaction){
                         if(data.status === "done" || data.status === "void"){}
                         else{
-                            return data.status+"<a href='/void-order/"+data.transaction.id+"'><button type='submit' class='btn btn-primary'>Void</button></a>";
+                            return '<button class="transaction btn btn-primary" type="button" data-id="'+data.transaction.id+'" data-toggle="modal" data-target="#orderModal">Orders</button>';
                         }
                     }
-                    
+
                     return "";
                 }
                 },
+                {"data" : 'table',
+                "render": function (data, type, row) {
+                    if(data.transaction){
+                        if(data.status === "done" || data.status === "void"){}
+                        else{
+                            return "<a href='/void-order/"+data.transaction.id+"'><button type='submit' class='btn btn-primary'>Void</button></a>";
+                        }
+                    }
 
+                    return "";
+                }
+                },
             ]
 
         }
     );
-    setInterval( function () {
-        table.ajax.reload( null, false ); // user paging is not reset on reload
-    }, 3000 );
+    //setInterval( function () {
+        //table.ajax.reload( null, false ); // user paging is not reset on reload
+    //}, 3000 );
 
+});
 obj = { table: "customers", limit: 20 };
 dbParam = JSON.stringify(obj);
 
@@ -214,11 +308,11 @@ function loadRequest(){
     }
     xmlhttp.open("GET", "/api/request-list", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("x=" + dbParam); 
+    xmlhttp.send("x=" + dbParam);
 }
 
 setInterval(loadRequest, 2000);
-});
+
 
 
 

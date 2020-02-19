@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@include('admin/form-category')
 <table  class="table table-striped table-bordered">
 	<tr>
 		<th>ID</th>
@@ -23,7 +24,7 @@
 	@endforeach
 </table>
 
-	@include('admin/form-category')
+
 @endsection
 
 @section('script')

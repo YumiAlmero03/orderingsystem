@@ -16,12 +16,12 @@ class TransactionController extends Controller
 {
     public function stageone(Request $request)
     {
-        
+
         $transaction = Transaction::where('username', $request->username)->first();
-        
-        
+
+
         if ($transaction){
-            
+
             if ($transaction->status == "done" || $transaction->status == "void" ) {
                 $fail = 'Code is Expired';
             } else {
@@ -34,7 +34,7 @@ class TransactionController extends Controller
         } else{
             $fail = 'Username does not exists';
         }
-        
+
         return back()->with('error', $fail);
     }
     public function qrRetrive($userid,$pass,$test)
@@ -72,7 +72,7 @@ class TransactionController extends Controller
         $feats = Menu::where('feat', 1)->get();
         $transaction->changeStatus('reordering');
         $reorder = 1;
-        
+
         return view('costumer/menu', ['menus'=>$menus, 'id'=>$transaction, 'feats'=>$feats, 'reorder'=> $reorder]);
     }
     public function reorder(Request $request)
@@ -124,9 +124,9 @@ class TransactionController extends Controller
     {
         $trans = Transaction::find($id);
         $trans->changeStatus('void');
-        return $trans;
+        return back()->with('error', 'Transaction Voided');
     }
-    
+
     public function test()
     {
         return"test";

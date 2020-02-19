@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable = ['quantity', 'id'];
+    protected $fillable = ['quantity', 'id', 'updated_at'];
     public $timestamps = true;
-
+    protected $with = ['menu'];
     public function transaction()
     {
         return $this->belongsTo('App\Transaction');

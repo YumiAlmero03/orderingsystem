@@ -23,10 +23,10 @@ class Menu extends Model
     {
         return $this->hasMany('App\Order');
     }
-    public function orderByDate($date, $cat)
+    public function orderByDate($start, $end)
     {
-
-        return $this->hasMany('App\Order')->whereDate('created_at', '=', $date);
+        //dd($date);
+        return $this->hasMany('App\Order')->whereBetween('updated_at', [$start, $end]);
     }
     public function getQuantity($id, $cat)
     {

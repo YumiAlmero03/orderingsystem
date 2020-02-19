@@ -85,6 +85,8 @@ class TransactionController extends Controller
         //
         $order = Transaction::find($request->order_id);
         $orders = [];
+        $date = Carbon\Carbon::now();
+
         foreach ($request->order as $key => $value) {
             array_push($orders, $value);
 
@@ -98,8 +100,7 @@ class TransactionController extends Controller
 
 
         $order->price = $request->price;
-        $date = Carbon\Carbon::now();
-        $order->order_at = $date;
+        $order->created_at = $date;
         $order->changeStatus('recording');
         return view('costumer/prep', ['order' => $order]);
     }

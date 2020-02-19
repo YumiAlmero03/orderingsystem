@@ -3,8 +3,8 @@
 @section('content')
 <div class="filter">
     <label>DATE</label>
-    <input type="date" name="start_date" id="start_date" value="{{Carbon\Carbon::now()->toDateString()}}">
-    <input type="date" name="end_date" id="end_date" value="{{Carbon\Carbon::now()->toDateString()}}">
+    <input type="date" name="start_date" id="start_date" value="{{$start_date}}">
+    <input type="date" name="end_date" id="end_date" value="{{$end_date}}">
     <a><button class="btn btn-primary" id="search">Search</button></a>
     <a><button class="btn btn-primary" >Export</button></a>
 
@@ -57,6 +57,7 @@
                 <th>Menu</th>
                 <th>Quantity</th>
                 <th>Price</th>
+                <th>Total</th>
             </tr>
             <tbody id="orderModalOrders">
 
@@ -77,10 +78,16 @@
 @section('script')
 
 $(document).ready( function () {
-
+    $('#search').click(function(){
+        start = $('#start_date').val();
+        end = $('#end_date').val();
+        console.log("reports/"+start+"/"+end);
+        location.replace("{{route('sales')}}/"+start+"/"+end);
+    });
     $('.transaction').click(function() {
         id = $(this).data('id');
         var flickerAPI = "{{route('apicostumers')}}/"+id;
+        $('#orderModalOrders').text("");
         $.getJSON( flickerAPI, {
             tags: "mount rainier",
             tagmode: "any",
@@ -90,12 +97,14 @@ $(document).ready( function () {
             $('span#orderModalUsername').text(data.username);
             $('td#orderModalPrice').text(data.price);
             $.each( data.order, function( i, item ) {
-
-                $( "<tr>" ).appendTo( "#orderModalOrders" );
-                $( "<td>" ).text( item.quantity ).appendTo( "#orderModalOrders" );
-                $( "<td>" ).text( item.quantity ).appendTo( "#orderModalOrders" );
-                $( "<td>" ).text( item.quantity ).appendTo( "#orderModalOrders" );
-                $( "</tr>" ).appendTo( "#orderModalOrders" );
+                if(item.quantity != 0){
+                    $( "<tr>" ).appendTo( "#orderModalOrders" );
+                    $( "<td>" ).text( item.menu.name ).appendTo( "#orderModalOrders" );
+                    $( "<td>" ).text( item.quantity ).appendTo( "#orderModalOrders" );
+                    $( "<td>" ).text( item.menu.price ).appendTo( "#orderModalOrders" );
+                    $( "<td>" ).text( item.menu.price * item.quantity ).appendTo( "#orderModalOrders" );
+                    $( "</tr>" ).appendTo( "#orderModalOrders" );
+                }
             });
         });
     });

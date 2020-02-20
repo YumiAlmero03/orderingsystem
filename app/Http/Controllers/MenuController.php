@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon;
 use App\Menu;
+use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\MenuRequest;
 class MenuController extends Controller
@@ -16,7 +17,8 @@ class MenuController extends Controller
     // protected $maxAttempts = 3;
     public function index()
     {
-        return view('admin/menu', ['tables'=>Menu::all()]);
+        
+        return view('admin/menu', ['tables'=>Menu::all(),'cats'=>Category::all()]);
     }
 
 

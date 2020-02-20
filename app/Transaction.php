@@ -36,9 +36,8 @@ class Transaction extends Model
         $table->status = $status;
         $table->save();
         $this->status = $status;
-        if ($status === 'done') {
-            $this->table_id = NULL;
-        }
+            //$this->table_id = NULL;
+        
     	$this->save();
     	return $this->status;
     }

@@ -10,8 +10,8 @@
                     <th>Table</th>
                     <th>Costumer</th>
                     <th>Status</th>
-                    <th>Place</th>
                     <th>Action</th>
+                    <th>Void</th>
                 </tr>
 
             </thead>
@@ -21,7 +21,6 @@
                 <td>{{$table->id}}</td>
                 <td>{{$table->transaction['username']}}</td>
                 <td>{{$table->transaction['status']}}</td>
-                <td>{{$table->place}}</td>
                 <td>
                     <form  method="POST" action="/status-change">
                         @csrf
@@ -60,6 +59,12 @@
                 @endswitch
                     </form>
                 </td>
+                <td>
+                    @if($table->status === 'done' || $table->status === 'void')
+                    @else
+                    <a href="{{route('void', ['id'=> $table->transaction['id']])}}"><button type="submit" class="btn btn-primary">Void</button></a>
+                    @endif
+                </td>
             </tr>
             @endforeach
             </tbody>
@@ -90,17 +95,24 @@ $(document).ready( function () {
             },
             "columns":[
                 {"data" : 'table.id'},
-                {"data" : 'table.transaction.username',
+                {"data" : 'table.transaction',
                 "render" : function(data, type, row){
-                        if(!data){
+                        if(!data || data.status === 'done'){
+                            return '';
+                        } else {
+                            return data.username;
+                        }
+                    }
+                },
+                {"data" : 'table.transaction.status',
+                "render" : function(data, type, row){
+                        if(!data || data === 'done'){
                             return '';
                         } else {
                             return data;
                         }
                     }
                 },
-                {"data" : 'table.status'},
-                {"data" : 'table.place'},
                 
                 {"data" : 'table',
                     "searchable": false,
@@ -156,6 +168,18 @@ $(document).ready( function () {
                             return 'Wait';
                         }
                     }
+                },
+                {"data" : 'table',
+                "render": function (data, type, row) {
+                    if(data.transaction){
+                        if(data.status === "done" || data.status === "void"){}
+                        else{
+                            return data.status+"<a href='/void-order/"+data.transaction.id+"'><button type='submit' class='btn btn-primary'>Void</button></a>";
+                        }
+                    }
+                    
+                    return "";
+                }
                 },
 
             ]

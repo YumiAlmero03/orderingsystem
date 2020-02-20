@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ mix('css/style.css') }}" rel="stylesheet" type="text/css">
+            <link rel="icon" type="image/png" href="{{asset('img/icon.png')}}" />
+
 
 	<title id="title">
 		@yield('title')

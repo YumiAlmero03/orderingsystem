@@ -6,7 +6,9 @@
 	<input type="file" name="pic" class="form-control">
 	<p>Category:</p>
 	<select name="category_id">
-		<option value="1">Rice</option>
+    @foreach($cats as $cat)
+		<option value="{{$cat->id}}">{{$cat->name}}</option>
+    @endforeach
 	</select>
 	<input type="submit" class="btn btn-primary" name="Submit">
 </form>

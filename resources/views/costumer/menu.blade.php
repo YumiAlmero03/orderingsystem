@@ -19,7 +19,8 @@
 
 		<div class="accordion" id="accordionExample">
 			<div class="card menu-cat">
-				@if($feats->count())
+				@if($feats)
+                
 			  	<a class="btn-link btn order-category btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapsefeat" aria-expanded="true" aria-controls="collapsefeat">
 				    <div class="card-header" id="headingfeat">
 				      <h2 class="mb-0">

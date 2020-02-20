@@ -21,7 +21,7 @@ Route::post('/reorder', 'TransactionController@reorder')->name('reorder');
 Route::post('/preparing', 'TransactionController@stagetwo');
 Route::post('/request', 'RequestController@store');
 Route::get('/done/{id}', 'TransactionController@stagethree')->name('done');
-Route::get('/qrto/{userid}/{pass}', 'TransactionController@qrRetrive')->name('qr');
+Route::get('/qrto/{userid}/{pass}/{test}', 'TransactionController@qrRetrive')->name('qr');
 Route::get('/testdb', 'TransactionController@test')->name('test');
 
 //admin
@@ -29,6 +29,7 @@ Route::post('/status-change', 'AdminController@changeStatus');
 Auth::routes();
 
 Route::get('/admin', 'HomeController@index')->name('home');
+Route::get('/void-order/{id}', 'TransactionController@void')->name('void');
 Route::resource('table', 'TableController');
 Route::resource('food', 'MenuController');
 Route::resource('category', 'CategoryController');

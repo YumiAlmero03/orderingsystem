@@ -24,7 +24,7 @@ class ReserveValidate extends FormRequest
     public function rules()
     {
         return [
-                'username' => 'required|max:8|min:8',
+                'username' => 'required|max:10|min:10',
                 'pass' => 'required',
         ];
     }

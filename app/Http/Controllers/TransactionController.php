@@ -16,26 +16,34 @@ class TransactionController extends Controller
 {
     public function stageone(Request $request)
     {
+        
         $transaction = Transaction::where('username', $request->username)->first();
-        if ($transaction->exists()){
-            if ($transaction->status == "done" ) {
-                $transaction->changeStatus('register');
+        
+        
+        if ($transaction){
+            
+            if ($transaction->status == "done" || $transaction->status == "void" ) {
+                $fail = 'Code is Expired';
+            } else {
+                if($request->pass === $transaction->pass){
+                    return $this->toMenu($transaction);
+                } else{
+                    $fail = 'Incorrect Password';
+                }
             }
-            if(Hash::check($request->pass, $transaction->pass)){
-                return $this->toMenu($transaction);
-            }
-            $fail = 'Incorrect Password';
+        } else{
+            $fail = 'Username does not exists';
         }
-        $fail = 'Username does not exists';
+        
         return back()->with('error', $fail);
     }
-    public function qrRetrive($userid,$pass)
+    public function qrRetrive($userid,$pass,$test)
     {
         $userid = $userid;
         $pass = $pass;
         $transaction = Transaction::where('username', $userid)->first();
-        if ($transaction->exists()){
-            if (Hash::check($pass, $transaction->pass)) {
+        if ($transaction){
+            if ($pass === $transaction->pass) {
                 if ($transaction->status == "done" ) {
                     $transaction->changeStatus('register');
                 }
@@ -43,7 +51,7 @@ class TransactionController extends Controller
             }
         }
         $fail = 'Error: Change QR';
-        return redirect('/')->with('error', $fail);
+        return view('costumer/reserve')->with('error', $fail);
     }
     public function toMenu($transaction)
     {
@@ -64,6 +72,7 @@ class TransactionController extends Controller
         $feats = Menu::where('feat', 1)->get();
         $transaction->changeStatus('reordering');
         $reorder = 1;
+        
         return view('costumer/menu', ['menus'=>$menus, 'id'=>$transaction, 'feats'=>$feats, 'reorder'=> $reorder]);
     }
     public function reorder(Request $request)
@@ -110,10 +119,15 @@ class TransactionController extends Controller
         $order = Transaction::find($id);
         return view('costumer/done', ['order' => $order]);
     }
-
+    public function void($id)
+    {
+        $trans = Transaction::find($id);
+        $trans->changeStatus('void');
+        return $trans;
+    }
+    
     public function test()
     {
         return"test";
     }
-
 }

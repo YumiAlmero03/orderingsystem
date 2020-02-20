@@ -14,6 +14,7 @@
 	<tr>
 		<td>{{$table->id}}</td>
 		<td>{{$table->name}}</td>
+        <td>{{$table->category['name']}}</td>
 		<td>
 			<form id="table-status" method="POST" action="{{route('food.feat')}}">
 				@csrf

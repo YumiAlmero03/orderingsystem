@@ -13,7 +13,7 @@
   text-transform: capitalize;
 }
 
-title {
+.title {
   text-transform: uppercase;
 }
 
@@ -27,6 +27,7 @@ title {
   max-width: 100px;
   width: auto;
 }
+
 
 .center {
   text-align: center;

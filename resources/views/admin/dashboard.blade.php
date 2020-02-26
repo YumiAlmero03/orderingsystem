@@ -1,89 +1,32 @@
 @extends('layouts.app')
 
+@section('style')
+#request .col-3{
+padding:0;
+}
+.done{
+background-color:mistyrose;
+}
+.new{
+background-color:orange;
+}
+.ordered{
+background-color:yellow;
+}
+.served{
+background-color:lightgreen;
+}
+.paid{
+background-color:lightblue;
+}
+.manual{
+background-color:violet;
+}
+@endsection
 @section('content')
 
-<div class="row">
-    <div class="col">
-        <table id="table" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Table</th>
-                    <th>Costumer</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                    <th>Orders</th>
-                    <th>Void</th>
-                </tr>
+<div class="row " id='request'>
 
-            </thead>
-            <tbody>
-            @foreach ($tables as $table)
-            <tr>
-                <td>{{$table->id}}</td>
-                <td>{{$table->transaction['username']}}</td>
-                <td>{{$table->transaction['status']}}</td>
-                <td>
-                    <form  method="POST" action="/status-change">
-                        @csrf
-                        <input type="hidden" name="id" value="{{$table->transaction['id']}}">
-                        @switch($table->status)
-                        @case('recording')
-                            <a href=""><button type="submit" class="btn btn-primary">Record</button></a>
-                            <input type="hidden" name="status" value="cooking">
-                        @break
-                        @case('cooking')
-                            <a href=""><button type="submit" class="btn btn-primary">Prepare</button></a>
-                            <input type="hidden" name="status" value="preparing">
-                        @break
-                        @case('preparing')
-                            <a href=""><button type="submit" class="btn btn-primary">Serve</button></a>
-                            <input type="hidden" name="status" value="serving">
-                        @break
-                        @case('serving')
-                            <a href=""><button type="submit" class="btn btn-primary">Served</button></a>
-                            <input type="hidden" name="status" value="eating">
-                        @break
-                        @case('eating')
-                            <a href=""><button type="submit" class="btn btn-primary">Bill-Out</button></a>
-                            <input type="hidden" name="status" value="billout">
-                        @break
-                        @case('billout')
-                            <a href=""><button type="submit" class="btn btn-primary">Paid</button></a>
-                            <input type="hidden" name="status" value="paid">
-                        @break
-                        @case('paid')
-                            <a href=""><button type="submit" class="btn btn-primary">Done</button></a>
-                            <input type="hidden" name="status" value="done">
-                        @break
-                        @default
-                            Wait
-                @endswitch
-                    </form>
-                </td>
-                <td>
-                    @if($table->status === 'done' || $table->status === 'void')
-                    @else
-                        <button class="transaction btn btn-primary" type="button" data-id="{{$table->id}}" data-toggle="modal" data-target="#orderModal">
-                            Orders
-                        </button>
-                    @endif
-                </td>
-                <td>
-                    @if($table->status === 'done' || $table->status === 'void')
-                    @else
-                    <a href="{{route('void', ['id'=> $table->transaction['id']])}}"><button type="submit" class="btn btn-primary">Void</button></a>
-                    @endif
-                </td>
-
-            </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-    <div class="col">
-        <div class="nav flex-column" id='request'>
-        </div>
-    </div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
@@ -121,198 +64,101 @@
 @endsection
 
 @section('script')
+$(document).ready(function(load) {
 
-$(document).ready( function () {
+    function loadRequest(){
+        $.getJSON( "/api/costumers", function(data) {
+            $("#request").html('');
+            var txt = '';
+            $.each(data, function(i, table) {
+                table = table.table;
+                txt += "<div class='card col-3'>";
+                txt += " <div class='card-header'><h2>Table:" + table.id +"</h2></div>";
+                if(table.status == "done" || table.status == "void"){
+                    txt += " <div class='card-body done'>";
+                }
+                else if(table.status == "reserve" || table.status == "ordering" || table.status == "reordering"){
+                    txt += " <div class='card-body new'>";
+                }
+                else if(table.status == "recording" || table.status == "cooking" || table.status == "preparing"){
+                    txt += " <div class='card-body ordered'>";
+                }
+                else if(table.status == "manual"){
+                    txt += " <div class='card-body manual'>";
+                }
+                else if(table.status == "serving" || table.status == "eating"){
+                    txt += " <div class='card-body served'>";
+                }
+                else if(table.status == "billout" || table.status == "paid"){
+                    txt += " <div class='card-body paid'>";
+                }
+                else{
+                    txt += " <div class='card-body'>";
+                }
+                if(table.transaction ){
+                if(table.status == "done" || table.status == "void"){}
+                else{
+                    txt += "<table>"
+                    if(table.transaction.order){
+                        txt += "<tr><th>Menu</th><th>Quantity</th><th>Price</th><th>Total</th></tr>"
+                        $.each(table.transaction.order, function(i, order) {
+                            if(order.quantity != 0){
+                                txt += "<tr><td>"+order.menu.name+"</td><td>"+order.quantity+"</td><td>"+order.menu.price+"</td><td>"+order.menu.price*order.quantity+"</td></tr>"
+                            }
+                        });
+                    }
+                    txt += " </table>";
+                }}
+                txt += "</div>";
+                txt += " <div class='card-footer'>"+table.status;
 
-
-
- var table = $('#table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "paging":   false,
-        "ordering": false,
-        "info":     false,
-        "search": false,
-        "initComplete": function(settings, json) {
-            $('button.transaction').click(function() {
-
-                id = $(this).data('id');
-                console.log(id);
-                var flickerAPI = "{{route('apicostumers')}}/"+id;
-                $('#orderModalOrders').text("");
-                $.getJSON( flickerAPI, {
-                    tags: "mount rainier",
-                    tagmode: "any",
-                    format: "json"
-                })
-                .done(function( data ) {
-                    console.log(data);
-                    $('span#orderModalUsername').text(data.username);
-                    $('td#orderModalPrice').text(data.price);
-                    $.each( data.order, function( i, item ) {
-                        if(item.quantity != 0){
-                            $( "<tr>" ).appendTo( "#orderModalOrders" );
-                            $( "<td>" ).text( item.menu.name ).appendTo( "#orderModalOrders" );
-                            $( "<td>" ).text( item.quantity ).appendTo( "#orderModalOrders" );
-                            $( "<td>" ).text( item.menu.price ).appendTo( "#orderModalOrders" );
-                            $( "<td>" ).text( item.menu.price * item.quantity ).appendTo( "#orderModalOrders" );
-                            $( "</tr>" ).appendTo( "#orderModalOrders" );
+                if(table.transaction){
+                    if(table.status == "done" || table.status == "void"){
+                        txt += "<center><h3>Wait</h3></center>"
+                    }
+                    else{
+                        txt += '<center><form method="post" action="/status-change">';
+                        txt += ' @csrf';
+                        txt += ' <input type="hidden" name="id" value="'+table.transaction.id+'">';
+                        if(table.status == "recording"){
+                            txt += '<button type="submit" class="btn btn-primary">Record</button>';
+                            txt += '<input type="hidden" name="status" value="cooking">';
+                        } else if(table.status == "cooking"){
+                            txt += '<button type="submit" class="btn btn-primary">Prepare</button>';
+                            txt += '<input type="hidden" name="status" value="preparing">';
+                        } else if(table.status == "preparing"){
+                            txt += '<button type="submit" class="btn btn-primary">Serve</button>';
+                            txt += '<input type="hidden" name="status" value="served">';
+                        } else if(table.status == "served"){
+                            txt += '<button type="submit" class="btn btn-primary">Served</button>';
+                            txt += '<input type="hidden" name="status" value="eating">';
+                        } else if(table.status == "eating"){
+                            txt += '<button type="submit" class="btn btn-primary">Bill Out</button>';
+                            txt += '<input type="hidden" name="status" value="billout">';
+                        } else if(table.status == "billout"){
+                            txt += '<button type="submit" class="btn btn-primary">Paid</button>';
+                            txt += '<input type="hidden" name="status" value="paid">';
+                        } else if(table.status == "paid"){
+                            txt += '<button type="submit" class="btn btn-primary">Done</button>';
+                            txt += '<input type="hidden" name="status" value="done">';
+                        } else if(table.status == "manual") {
+                            txt += "<h3>Manual</h3>"
+                        } else {
+                            txt += "<h3>Wait</h3>"
                         }
-                    });
+                        txt += "</form>";
+                        txt += "<a href='/void-order/"+table.transaction.id+"'><button type='submit' class='btn btn-primary'>Void</button></a></center>";
+                    }}
+
+                    txt += "</div></div>";
                 });
-            });
-        },
-        "bFilter": false,
-            "ajax": {
-                "url" : '/api/costumers',
-                "dataSrc": ''
-            },
-            "columns":[
-                {"data" : 'table.id'},
-                {"data" : 'table.transaction',
-                "render" : function(data, type, row){
-                        if(!data || data.status === 'done' || data.status === 'void'){
-                            return '';
-                        } else {
-                            return data.username;
-                        }
-                    }
-                },
-                {"data" : 'table.transaction.status',
-                "render" : function(data, type, row){
-                        if(!data || data === 'done' || data === 'void'){
-                            return '';
-                        } else {
-                            return data;
-                        }
-                    }
-                },
 
-                {"data" : 'table',
-                    "searchable": false,
-                    "orderable":false,
-                    "render": function (data, type, row) {
-                        var $title = '';
-                        var $next = '';
-                        if(data.transaction){
-                            switch (data.transaction.status) {
-                                case 'recording':
-                                    $title = 'Record';
-                                    $next = 'cooking';
-                                    break;
-                                case 'cooking':
-                                    $title = 'Prepare';
-                                    $next = 'preparing';
-                                    break;
-                                case 'preparing':
-                                    $title = 'Serve';
-                                    $next = 'serving';
-                                    break;
-                                case 'serving':
-                                    $title = 'Served';
-                                    $next = 'eating';
-                                    break;
-                                case 'eating':
-                                    $title = 'Bill-Out';
-                                    $next = 'billout';
-                                    break;
-                                case 'billout':
-                                    $title = 'Paid';
-                                    $next = 'paid';
-                                    break;
-                                case 'paid':
-                                    $title = 'Done';
-                                    $next = 'done';
-                                    break;
-                                case 'done':
-                                    $title = 'Wait';
-                                    $next = 'done';
-                                    break;
-                                case 'manual':
-                                    $title = 'Wait';
-                                    $next = 'Manual';
-                                    break;
-                                default:
-                                    $title = 'Wait';
-                                    break;
-                            }
-                            if ($title != 'Wait') {
-
-                                return '<form id="table-status" method="POST" action="/status-change">'+'@csrf'+'<input type="hidden" name="id" value="'+data.transaction.id+'"><a href=""><button type="submit" class="btn btn-primary">'+$title+'</button></a><input type="hidden" name="status" value="'+$next+'"></form>';
-                            }
-                            else if ($next === 'Manual') {
-                                return 'Manual';
-                            }
-                            else {
-                                return $title;
-                            }
-                        } else {
-                            return 'Wait';
-                        }
-                    }
-                },
-                {"data" : 'table',
-                "render": function (data, type, row) {
-                    if(data.transaction){
-                        if(data.status === "done" || data.status === "void"){}
-                        else{
-                            return '<button class="transaction btn btn-primary" type="button" data-id="'+data.transaction.id+'" data-toggle="modal" data-target="#orderModal">Orders</button>';
-                        }
-                    }
-
-                    return "";
-                }
-                },
-                {"data" : 'table',
-                "render": function (data, type, row) {
-                    if(data.transaction){
-                        if(data.status === "done" || data.status === "void"){}
-                        else{
-                            return "<a href='/void-order/"+data.transaction.id+"'><button type='submit' class='btn btn-primary'>Void</button></a>";
-                        }
-                    }
-
-                    return "";
-                }
-                },
-            ]
-
-        }
-    );
-    //setInterval( function () {
-        //table.ajax.reload( null, false ); // user paging is not reset on reload
-    //}, 3000 );
-
-});
-obj = { table: "customers", limit: 20 };
-dbParam = JSON.stringify(obj);
-
-function loadRequest(){
-    xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        myObj = JSON.parse(this.responseText);
-        var txt;
-        txt += "<div class='card'>";
-        for (x in myObj) {
-          txt += " <div class='card-header'><h2>" + myObj[x].table_id + "</h2></div>";
-          txt += " <div class='card-body'><h2>" + myObj[x].content + "</h2></div>";
-          txt += " <div class='card-footer'><form method='POST' action='{{ route('request.remove') }}'><input type='hidden' name='id' value='" + myObj[x].id + "'><input type='hidden' name='_token' value='";
-            txt += document.getElementById("csrf").value;
-          txt +="'><button class='btn btn-primary' type='submit'>DONE</button></div>";
-
-        }
-        txt += "</div>";
-        document.getElementById("request").innerHTML = txt;
-      }
+            $("#request").append(txt);
+        });
     }
-    xmlhttp.open("GET", "/api/request-list", true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("x=" + dbParam);
-}
-
-setInterval(loadRequest, 2000);
-
+    loadRequest()
+    setInterval(loadRequest, 3000);
+});
 
 
 

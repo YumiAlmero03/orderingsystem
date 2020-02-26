@@ -82,7 +82,7 @@ class RequestController extends Controller
      * @param  \App\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
+
     public function destroy(Request $request)
     {
         //

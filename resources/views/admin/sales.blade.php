@@ -6,7 +6,7 @@
     <input type="date" name="start_date" id="start_date" value="{{$start_date}}">
     <input type="date" name="end_date" id="end_date" value="{{$end_date}}">
     <a><button class="btn btn-primary" id="search">Search</button></a>
-    <a><button class="btn btn-primary" >Export</button></a>
+    <a href="{{route('sales-export', ['start'=>$start_date,'end'=>$end_date])}}"><button class="btn btn-primary" >Export</button></a>
 
 </div>
 <table id="table" class="table table-striped table-bordered">

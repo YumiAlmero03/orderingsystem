@@ -24,14 +24,8 @@
             <td>{{$table->id}}</td>
             <td>{{$table->name}}</td>
             <td>{{$table->category['name']}}</td>
-
-            @if($cat === 'default')
-                <td>{{$table->order()->sum('quantity')}}</td>
-                <td>{{($table->price * $table->order()->sum('quantity'))}}</td>
-            @else
-                <td>{{$table->orderByDate($start_date, $end_date)->sum('quantity')}}</td>
-                <td>{{($table->price * $table->orderByDate($start_date, $end_date)->sum('quantity'))}}</td>
-            @endif
+            <td>{{$table->orderByDate($start_date, $end_date)->sum('quantity')}}</td>
+            <td>{{($table->price * $table->orderByDate($start_date, $end_date)->sum('quantity'))}}</td>
         </tr>
         @endforeach
     </tbody>

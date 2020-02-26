@@ -36,6 +36,7 @@ Route::resource('category', 'CategoryController');
 Route::get('reports', 'ReportsController@index')->name('report');
 Route::get('reports/{cat}/{date}', 'ReportsController@reportDate')->name('reports');
 Route::get('export/{start}/{end}', 'ReportsController@export')->name('export');
+Route::get('sale-export/{start}/{end}', 'ReportsController@salesExport')->name('sales-export');
 Route::get('sales', 'ReportsController@sales')->name('sales');
 Route::get('sales/{start}/{end}', 'ReportsController@salesDate');
 Route::post('category/destroy', 'CategoryController@destroy')->name('category.remove');

@@ -22,7 +22,7 @@ class GenerateController extends Controller
         $table = Table::available()->id;
         $transaction = Transaction::create([
             'username'=> $username,
-            'pass'=> Hash::make($pass),
+            'pass'=> $pass,
             'status'=> 'reserve',
             'table_id'=> $table
         ]);

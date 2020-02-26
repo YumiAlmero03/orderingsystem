@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Menu;
 use App\Transaction;
 use Carbon\Carbon;
+use App\Exports\MenuExport;
+use App\Exports\SalesExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class ReportsController extends Controller
 {
     //
@@ -35,9 +39,9 @@ class ReportsController extends Controller
     }
     public function sales()
     {
-        $table = Transaction::all();
         $from = Carbon::yesterday()->toDateString();
         $to = Carbon::now()->toDateString();
+        $table = Transaction::whereBetween('created_at', [$from, $to])->get();
         return view('admin/sales', [
             'tables'=>$table,
             'start_date' => $from,
@@ -56,18 +60,23 @@ class ReportsController extends Controller
     public function export($from, $to)
     {
         $table = Menu::all();
-        Excel::create('Report', function($excel) {
-
-            $excel->sheet('New sheet', function($sheet) {
-
-                $sheet->loadView('excel.report', [
-                    'tables'=>$table,
-                    'cat' => 'date',
-                    'start_date' => $from,
-                    'end_date' => $to
-                ]);
-            });
-
-        });
+        $export = new MenuExport([
+            'tables'=>$table,
+            'cat' => 'date',
+            'start_date' => $from,
+            'end_date' => $to
+        ]);
+        return Excel::download($export, 'reports.xlsx');
+    }
+    public function salesExport($from, $to)
+    {
+        $table = Transaction::whereBetween('created_at', [$from, $to])->get();
+        $export = new SalesExport([
+            'tables'=>$table,
+            'cat' => 'date',
+            'start_date' => $from,
+            'end_date' => $to
+        ]);
+        return Excel::download($export, 'reports.xlsx');
     }
 }

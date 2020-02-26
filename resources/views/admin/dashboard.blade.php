@@ -110,7 +110,7 @@ $(document).ready(function(load) {
                     txt += " </table>";
                 }}
                 txt += "</div>";
-                txt += " <div class='card-footer'>"+table.status;
+                txt += " <div class='card-footer'>";
 
                 if(table.transaction){
                     if(table.status == "done" || table.status == "void"){

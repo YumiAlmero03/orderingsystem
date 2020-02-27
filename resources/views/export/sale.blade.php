@@ -1,17 +1,19 @@
 <table id="table" class="table table-striped table-bordered">
 	<thead>
-    <tr>
-		<th>Transaction</th>
-		<th>Status</th>
-        <th>Table</th>
-		<th>Total Amount Purchased</th>
-		<th>In</th>
-		<th>Out</th>
-	</tr>
+        <tr>
+            <th colspan="6">{{ config('app.name', 'Laravel') }}</th>
+        </tr>
+        <tr>
+            <th>Transaction</th>
+            <th>Status</th>
+            <th>Table</th>
+            <th>Total Amount Purchased</th>
+            <th>In</th>
+            <th>Out</th>
+        </tr>
     </thead>
     <tbody>
         @foreach ($tables as $table)
-
             <tr>
                 <td>{{$table->username}}</td>
                 <td>{{$table->status}}</td>

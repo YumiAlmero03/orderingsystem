@@ -21,6 +21,7 @@ class CreateMenusTable extends Migration
             $table->string('pic')->default('FOOD.jpg');
             $table->boolean('feat')->default(0);
             $table->string('category_id')->default(1);
+            $table->string('prepare_time')->default(1);
             $table->boolean('active')->default(1);
             $table->timestamps();
         });

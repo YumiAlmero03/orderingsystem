@@ -2,15 +2,24 @@
 	@csrf
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Menu Name</span>
+            <span class="input-group-text" id="menu-name">Menu Name</span>
         </div>
         <input type="text" class="form-control" name="name" id="menuname" placeholder="Menu Name" aria-label="Username" aria-describedby="basic-addon1">
     </div>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Menu Price</span>
+            <span class="input-group-text" id="menu-price">Menu Price</span>
         </div>
         <input type="number" class="form-control" name="price" id="menuprice" placeholder="Menu Price" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="menu-prepare">Prepare Time</span>
+        </div>
+        <input type="number" class="form-control" name="price" id="menuprice" placeholder="Menu Price" aria-label="Username" aria-describedby="basic-addon1">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="menu-min">Mins</span>
+        </div>
     </div>
     <div class="input-group mb-3">
         <div class="input-group-prepend">

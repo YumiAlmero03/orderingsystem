@@ -74,7 +74,7 @@ $(document).ready(function(load) {
                 table = table.table;
                 txt += "<div class='card col-3'>";
                 txt += " <div class='card-header'><h2>Table:" + table.id +"</h2></div>";
-                if(table.status == "done" || table.status == "void"){
+                if(table.status == "done" || table.status == "void" || table.status == "vacant"){
                     txt += " <div class='card-body done'>";
                 }
                 else if(table.status == "reserve" || table.status == "ordering" || table.status == "reordering"){
@@ -111,12 +111,11 @@ $(document).ready(function(load) {
                 }}
                 txt += "</div>";
                 txt += " <div class='card-footer'>";
-
+                if(table.status == "done" || table.status == "void" || table.status == "vacant"){
+                    txt += "<center><h3>Vacant</h3></center>"
+                } else {
                 if(table.transaction){
-                    if(table.status == "done" || table.status == "void"){
-                        txt += "<center><h3>Wait</h3></center>"
-                    }
-                    else{
+
                         txt += '<center><form method="post" action="/status-change">';
                         txt += ' @csrf';
                         txt += ' <input type="hidden" name="id" value="'+table.transaction.id+'">';
@@ -157,7 +156,7 @@ $(document).ready(function(load) {
         });
     }
     loadRequest()
-    setInterval(loadRequest, 3000);
+    //setInterval(loadRequest, 3000);
 });
 
 

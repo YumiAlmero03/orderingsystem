@@ -9,7 +9,7 @@ class Table extends Model
     //
     protected $with = ['transaction'];
     protected $fillable = [
-        'status', 'place'
+        'status', 'place', 'id'
     ];
     protected $relationMethods;
     public function transaction()
@@ -18,6 +18,6 @@ class Table extends Model
     }
     public function scopeAvailable($query)
     {
-    	return $query->where('status', 'done')->first();
+    	return $query->where('status', 'vacant')->first();
     }
 }

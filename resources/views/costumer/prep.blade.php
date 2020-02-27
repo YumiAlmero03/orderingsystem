@@ -20,15 +20,16 @@ Order Status: {{$order->status}}
 		<p>ET: <span id="demo"></span></p>
 		<p>Status: <span id="stats">{{$order->status}}</span></p>
 	</div>
-	<div class="card-footer">
+	<div class="card-footer">{{$order->order->sum('menu.prepare_time')}}
 				@include('costumer._survey')
     </div>
 </div>
+
 @endsection
 
 @section('script')
 // Set the date we're counting down to
-var countDownDate = new Date("{{Carbon\Carbon::parse("$order->order_at")->addMinutes(20)}}").getTime();//"Aug 14, 2019 15:37:25"
+var countDownDate = new Date("{{Carbon\Carbon::parse("$order->order_at")->addMinutes(25)}}").getTime();//"Aug 14, 2019 15:37:25"
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -68,7 +69,7 @@ xmlhttp.onreadystatechange = function(){
 			window.location.replace('{{route('done', ['id' => $order->id])}}');
 		}
 		if(myObj == "cooking"){
-			document.getElementByClassName("change-order").remove();
+			$(".change-order").remove();
 		}
 	}
 };

@@ -34,8 +34,8 @@ class Transaction extends Model
     public function changeStatus($status)
     {
         $table = Table::find($this->table_id);
-        if($status === 'void'){
-            $table->status = 'done';
+        if($status === 'void' || $status === 'done'){
+            $table->status = 'vacant';
         } else {
             $table->status = $status;
         }

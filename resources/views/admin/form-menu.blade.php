@@ -16,7 +16,7 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="menu-prepare">Prepare Time</span>
         </div>
-        <input type="number" class="form-control" name="price" id="menuprice" placeholder="Menu Price" aria-label="Username" aria-describedby="basic-addon1">
+        <input type="number" class="form-control" name="prepare_time" id="menuprepare" placeholder="Menu Prepare Time" aria-label="Username" aria-describedby="basic-addon1">
         <div class="input-group-prepend">
             <span class="input-group-text" id="menu-min">Mins</span>
         </div>

@@ -94,23 +94,26 @@ class TransactionController extends Controller
         //
         $order = Transaction::find($request->order_id);
         $orders = [];
+        $time = 0;
         $date = Carbon\Carbon::now();
-
         foreach ($request->order as $key => $value) {
             array_push($orders, $value);
-
             if (isset($value['id'])) {
                 $test = Order::updateOrCreate(['id'=>(int)$value['id']],$value);
             } else {
                 $test = Order::insert($value);
             }
+            if($value['quantity'] != 0){
+                $test =Menu::find($value['menu_id']);
+                $time .= intval($value['quantity']) * intval($test->prepare_time);
+            }
         }
         //
-
-
         $order->price = $request->price;
-        $order->created_at = $date;
+        $order->order_at = $date;
+        $order->preptime = intval($time);
         $order->changeStatus('recording');
+
         return view('costumer/prep', ['order' => $order]);
     }
 

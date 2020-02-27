@@ -2,7 +2,9 @@
 @section('title')
 Order Status: {{$order->status}}
 @endsection
+
 @section('content')
+
 <div class="card">
 	<div class="card-header">
 		<h2> Thank you!</h2>
@@ -20,7 +22,7 @@ Order Status: {{$order->status}}
 		<p>ET: <span id="demo"></span></p>
 		<p>Status: <span id="stats">{{$order->status}}</span></p>
 	</div>
-	<div class="card-footer">{{$order->order->sum('menu.prepare_time')}}
+	<div class="card-footer">
 				@include('costumer._survey')
     </div>
 </div>
@@ -29,7 +31,7 @@ Order Status: {{$order->status}}
 
 @section('script')
 // Set the date we're counting down to
-var countDownDate = new Date("{{Carbon\Carbon::parse("$order->order_at")->addMinutes(25)}}").getTime();//"Aug 14, 2019 15:37:25"
+var countDownDate = new Date("{{Carbon\Carbon::parse("$order->updated_at")->addMinutes(intval($order->preptime))}}").getTime();//"Aug 14, 2019 15:37:25"
 
 // Update the count down every 1 second
 var x = setInterval(function() {

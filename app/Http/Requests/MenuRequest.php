@@ -27,6 +27,7 @@ class MenuRequest extends FormRequest
             'name' => 'required|min:3',
             'price' => 'required',
             'category_id' => 'required',
+            'prepare_time' => 'required',
             'pic' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }

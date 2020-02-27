@@ -51,6 +51,7 @@ class MenuController extends Controller
             'desc'=>$request->desc,
             'price'=>$request->price,
             'pic'=>$imageName,
+            'prepare_time'=>$request->prepare_time,
             'feat'=>0,
             'category_id'=>$request->category_id,
             'active'=>1]);

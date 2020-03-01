@@ -1,27 +1,37 @@
 <html>
+    <head>
+        <style>
+            td, th{
+                word-wrap:break-word;
+                width:5000px;
+            }
+        </style>
+    </head>
+<body>
 <table id="table" class="table table-striped table-bordered">
 	<thead>
+            @include('export/_heading')
     <tr>
-		<th>Menu ID</th>
-		<th>Menu</th>
-        <th>Menu Category</th>
-		<th>QTY</th>
-		<th>Total Amount</th>
+		<th style="width:20px;word-wrap:break-word;text-align:center">Menu ID</th>
+		<th style="width:20px;word-wrap:break-word;text-align:center">Menu</th>
+        <th style="width:20px;word-wrap:break-word;text-align:center">Menu Category</th>
+		<th style="width:20px;word-wrap:break-word;text-align:center">QTY</th>
+		<th style="width:20px;word-wrap:break-word;text-align:center">Total Amount</th>
 	</tr>
     </thead>
     <tbody>
         @foreach ($tables as $table)
         <tr>
-            <td>{{$table->id}}</td>
-            <td>{{$table->name}}</td>
-            <td>{{$table->category['name']}}</td>
+            <td style="word-wrap:break-word;text-align:center">{{$table->id}}</td>
+            <td style="word-wrap:break-word;text-align:center">{{$table->name}}</td>
+            <td style="word-wrap:break-word;text-align:center">{{$table->category['name']}}</td>
 
             @if($cat === 'default')
-                <td>{{$table->order()->sum('quantity')}}</td>
-                <td>{{($table->price * $table->order()->sum('quantity'))}}</td>
+                <td style="word-wrap:break-word;text-align:center">{{$table->order()->sum('quantity')}}</td>
+                <td style="word-wrap:break-word;text-align:center">{{($table->price * $table->order()->sum('quantity'))}}</td>
             @else
-                <td>{{$table->orderByDate($start_date, $end_date)->sum('quantity')}}</td>
-                <td>{{($table->price * $table->orderByDate($start_date, $end_date)->sum('quantity'))}}</td>
+                <td style="word-wrap:break-word;text-align:center">{{$table->orderByDate($start_date, $end_date)->sum('quantity')}}</td>
+                <td style="word-wrap:break-word;text-align:center">{{($table->price * $table->orderByDate($start_date, $end_date)->sum('quantity'))}}</td>
             @endif
         </tr>
         @endforeach

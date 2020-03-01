@@ -96,7 +96,7 @@ $(document).ready(function(load) {
                     txt += " <div class='card-body'>";
                 }
                 if(table.transaction ){
-                if(table.status == "done" || table.status == "void"){}
+                if(table.status == "done" || table.status == "void"  || table.status == "vacant"){}
                 else{
                     txt += "<table>"
                     if(table.transaction.order){
@@ -142,6 +142,8 @@ $(document).ready(function(load) {
                             txt += '<input type="hidden" name="status" value="done">';
                         } else if(table.status == "manual") {
                             txt += "<h3>Manual</h3>"
+                            txt += '<button type="submit" class="btn btn-primary">Done</button>';
+                            txt += '<input type="hidden" name="status" value="done">';
                         } else {
                             txt += "<h3>Wait</h3>"
                         }
@@ -156,7 +158,7 @@ $(document).ready(function(load) {
         });
     }
     loadRequest()
-    //setInterval(loadRequest, 3000);
+    setInterval(loadRequest, 3000);
 });
 
 

@@ -12,7 +12,7 @@ Order Status: {{$order->status}}
 	</div>
 	<div class="card-body">
 		<div class="timer">
-			<p class="change-order ">You can change your order in 5 mins.</p>
+			<p class="change-order ">You can change your order in 3 mins.</p>
 			<form class="change-order" method="POST" action="/reorder" >
 				@csrf
 				<input type="submit" class="change-order btn btn-outline-secondary" name="submit" value="Change Order">
@@ -20,8 +20,10 @@ Order Status: {{$order->status}}
 			</form>
 		</div>
 		<p>ET: <span id="demo"></span></p>
-		<p>Status: <span id="stats">{{$order->status}}</span></p>
-	</div>
+		<p><span id="stats"></span></p>
+		<p><span id="title"></span></p>
+
+        </div>
 	<div class="card-footer">
 				@include('costumer._survey')
     </div>
@@ -30,44 +32,37 @@ Order Status: {{$order->status}}
 @endsection
 
 @section('script')
-// Set the date we're counting down to
-var countDownDate = new Date("{{Carbon\Carbon::parse("$order->updated_at")->addMinutes(intval($order->preptime))}}").getTime();//"Aug 14, 2019 15:37:25"
+var countDownDate = new Date("{{Carbon\Carbon::parse("$order->updated_at")->addMinutes(intval($order->preptime))}}").getTime();
 
 // Update the count down every 1 second
 var x = setInterval(function() {
-
-  // Get today's date and time
   var now = new Date().getTime();
-
-  // Find the distance between now and the count down date
   var distance = countDownDate - now;
-
-  // Time calculations for days, hours, minutes and seconds
   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
   var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  // Display the result in the element with id="demo"
-  document.getElementById("demo").innerHTML = hours + "h "
+  document.getElementById("demo").innerHTML =
   + minutes + "m " + seconds + "s ";
 
-  // If the count down is finished, write some text
-  	if(minutes == 15){
-	  $(".change-order").remove();
-	}
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("demo").innerHTML = "Please Wait";
-  }
+    if(minutes == {{intval($order->preptime) - 3}}){
+        $(".change-order").remove();
+    }
+    if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("demo").innerHTML = "Please Wait...";
+    }
+
 }, 1000);
+
 var xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function(){
 	if (this.readyState == 4 && this.status == 200){
 		var myObj = JSON.parse(this. responseText);
-		document.getElementById("stats").innerHTML = myObj;
-		document.getElementById("title").innerHTML = "Order Status: "+myObj;
-		if(myObj == "serving" && myObj == "serving"){
+		document.getElementById("stats").innerHTML = "Order Status: "+myObj;
+		document.getElementById("title").innerHTML = myObj;
+		if(myObj == "serving" && myObj == "serving" && myObj == "served"){
 			window.location.replace('{{route('done', ['id' => $order->id])}}');
 		}
 		if(myObj == "cooking"){

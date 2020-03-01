@@ -9,6 +9,7 @@ Add Menu
 		<th>ID</th>
 		<th>Name</th>
 		<th>Category</th>
+		<th>Preptime</th>
 		<th>Feature</th>
 		<th>Availability</th>
 		<th>Edit</th>
@@ -19,6 +20,7 @@ Add Menu
 		<td>{{$table->id}}</td>
 		<td>{{$table->name}}</td>
         <td>{{$table->category['name']}}</td>
+        <td>{{$table->prepare_time}}</td>
 		<td>
 			<form id="table-status" method="POST" action="{{route('food.feat')}}">
 				@csrf

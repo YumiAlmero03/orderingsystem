@@ -21,6 +21,7 @@ Route::post('/reorder', 'TransactionController@reorder')->name('reorder');
 Route::post('/preparing', 'TransactionController@stagetwo');
 Route::post('/request', 'RequestController@store');
 Route::get('/done/{id}', 'TransactionController@stagethree')->name('done');
+Route::get('/prep/{id}', 'TransactionController@prep')->name('prep');
 Route::get('/qrto/{userid}/{pass}/{test}', 'TransactionController@qrRetrive')->name('qr');
 Route::get('/testdb', 'TransactionController@test')->name('test');
 

@@ -114,9 +114,12 @@ class TransactionController extends Controller
         $order->preptime = intval($time);
         $order->changeStatus('recording');
 
+        return redirect()->route('prep', ['id' => $order->id]);
+    }
+    public function prep($id){
+        $order = Transaction::find($id);
         return view('costumer/prep', ['order' => $order]);
     }
-
     public function stagethree($id)
     {
         //

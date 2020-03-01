@@ -79,7 +79,7 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu, $food)
     {
-        return view('admin/menu-edit', ['menu'=>$this->show($food)]);
+        return view('admin/menu-edit', ['menu'=>$this->show($food),'cats'=>Category::all()]);
     }
 
     /**
@@ -103,6 +103,7 @@ class MenuController extends Controller
         $menu->desc = $request->desc;
         $menu->price = $request->price;
         $menu->category_id = $request->category_id;
+        $menu->prepare_time = $request->prepare_time;
         $menu->save();
         return back()->with('success', 'Menu Updated');
     }

@@ -66,7 +66,7 @@ class ReportsController extends Controller
             'start_date' => $from,
             'end_date' => $to
         ]);
-        return Excel::download($export, 'reports.xlsx');
+        return Excel::download($export, 'reports '.$from.'to'. $to.'.xlsx');
     }
     public function salesExport($from, $to)
     {
@@ -77,6 +77,6 @@ class ReportsController extends Controller
             'start_date' => $from,
             'end_date' => $to
         ]);
-        return Excel::download($export, 'reports.xlsx');
+        return Excel::download($export, 'sales '.$from.'to'. $to.'.xlsx');
     }
 }

@@ -22,6 +22,18 @@ background-color:lightblue;
 .manual{
 background-color:violet;
 }
+form center{
+    display:flex;
+}
+form center *{
+    flex:auto;
+}
+h2{
+    display:flex;
+}
+span.right{
+    margin-left:auto;
+}
 @endsection
 @section('content')
 
@@ -73,11 +85,11 @@ $(document).ready(function(load) {
             $.each(data, function(i, table) {
                 table = table.table;
                 txt += "<div class='card col-3'>";
-                txt += " <div class='card-header'><h2>Table:" + table.id +"</h2></div>";
+                txt += " <div class='card-header'><h2><span>Table:" + table.id +"</span><span class='right'>" + table.status +"</span></h2></div>";
                 if(table.status == "done" || table.status == "void" || table.status == "vacant"){
                     txt += " <div class='card-body done'>";
                 }
-                else if(table.status == "reserve" || table.status == "ordering" || table.status == "reordering"){
+                else if(table.status == "reserved" || table.status == "ordering" || table.status == "reordering"){
                     txt += " <div class='card-body new'>";
                 }
                 else if(table.status == "recording" || table.status == "cooking" || table.status == "preparing"){
@@ -116,39 +128,38 @@ $(document).ready(function(load) {
                 } else {
                 if(table.transaction){
 
-                        txt += '<center><form method="post" action="/status-change">';
+                        txt += '<form method="post" action="/status-change"><center>';
                         txt += ' @csrf';
                         txt += ' <input type="hidden" name="id" value="'+table.transaction.id+'">';
                         if(table.status == "recording"){
-                            txt += '<button type="submit" class="btn btn-primary">Record</button>';
+                            txt += '<a><button type="submit" class="btn btn-primary">Record</button></a>';
                             txt += '<input type="hidden" name="status" value="cooking">';
                         } else if(table.status == "cooking"){
-                            txt += '<button type="submit" class="btn btn-primary">Prepare</button>';
+                            txt += '<a><button type="submit" class="btn btn-primary">Prepare</button></a>';
                             txt += '<input type="hidden" name="status" value="preparing">';
                         } else if(table.status == "preparing"){
-                            txt += '<button type="submit" class="btn btn-primary">Serve</button>';
+                            txt += '<a><button type="submit" class="btn btn-primary">Serve</button></a>';
                             txt += '<input type="hidden" name="status" value="served">';
                         } else if(table.status == "served"){
-                            txt += '<button type="submit" class="btn btn-primary">Served</button>';
+                            txt += '<a><button type="submit" class="btn btn-primary">Served</button></a>';
                             txt += '<input type="hidden" name="status" value="eating">';
                         } else if(table.status == "eating"){
-                            txt += '<button type="submit" class="btn btn-primary">Bill Out</button>';
+                            txt += '<a><button type="submit" class="btn btn-primary">Bill Out</button></a>';
                             txt += '<input type="hidden" name="status" value="billout">';
                         } else if(table.status == "billout"){
-                            txt += '<button type="submit" class="btn btn-primary">Paid</button>';
+                            txt += '<a><button type="submit" class="btn btn-primary">Paid</button></a>';
                             txt += '<input type="hidden" name="status" value="paid">';
                         } else if(table.status == "paid"){
-                            txt += '<button type="submit" class="btn btn-primary">Done</button>';
+                            txt += '<a><button type="submit" class="btn btn-primary">Done</button></a>';
                             txt += '<input type="hidden" name="status" value="done">';
                         } else if(table.status == "manual") {
-                            txt += "<h3>Manual</h3>"
                             txt += '<button type="submit" class="btn btn-primary">Done</button>';
                             txt += '<input type="hidden" name="status" value="done">';
+                            txt += '<a href="/qrto/'+table.transaction.username+'/'+table.transaction.pass+'/qrcode"><button type="button" class="btn btn-primary">Order</button></a>';
                         } else {
                             txt += "<h3>Wait</h3>"
                         }
-                        txt += "</form>";
-                        txt += "<a href='/void-order/"+table.transaction.id+"'><button type='submit' class='btn btn-primary'>Void</button></a></center>";
+                        txt += "<a href='/void-order/"+table.transaction.id+"'><button type='submit' class='btn btn-primary'>Void</button></a></center></form>";
                     }}
 
                     txt += "</div></div>";

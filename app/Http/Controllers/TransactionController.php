@@ -57,7 +57,12 @@ class TransactionController extends Controller
     {
         if ($transaction->status === "reordering" ) {
             return $this->toReorder($transaction);
-        } elseif ($transaction->status === "ordering" || $transaction->status === "register"|| $transaction->status === "reserve") {
+        } elseif ($transaction->status === "ordering" || $transaction->status === "register"  || $transaction->status === "manual" || $transaction->status === "reserve") {
+                //dd($transaction) ;
+
+            if ($transaction->preptime != NULL) {
+                return $this->toReorder($transaction);
+            }
             return $this->order($transaction);
         } elseif ($transaction->status === "done" ) {
             $fail = 'Transaction is Completed';
@@ -113,7 +118,10 @@ class TransactionController extends Controller
         $order->order_at = $date;
         $order->preptime = intval($time);
         $order->changeStatus('recording');
-
+        
+        if($order->status === 'manual'){
+            return redirect()->route('home');            
+        }
         return redirect()->route('prep', ['id' => $order->id]);
     }
     public function prep($id){

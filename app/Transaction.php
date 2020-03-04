@@ -13,9 +13,6 @@ class Transaction extends Model
     protected $fillable = [
         'username', 'pass', 'status', 'table_id', 'orders', 'order_at'
     ];
-    protected $hidden = [
-        'pass'
-    ];
     protected $casts = [
         'orders' => 'array'
     ];
@@ -35,15 +32,20 @@ class Transaction extends Model
     {
         $table = Table::find($this->table_id);
         if($status === 'void' || $status === 'done'){
-            $table->status = 'vacant';
+            $table->status = 'vacant';            
         } else {
-            $table->status = $status;
+            if($table->status === 'manual'){
+            } else {
+                $table->status = $status;
+            }
         }
-        $table->save();
-        $this->status = $status;
-            //$this->table_id = NULL;
-
-    	$this->save();
+            $table->save();
+        if($table->status === 'manual'){
+        } else {
+            $this->status = $status;
+        }
+        
+            $this->save();
     	return $this->status;
     }
 

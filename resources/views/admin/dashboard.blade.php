@@ -85,7 +85,7 @@ $(document).ready(function(load) {
             $.each(data, function(i, table) {
                 table = table.table;
                 txt += "<div class='card col-3'>";
-                txt += " <div class='card-header'><h2><span>Table:" + table.id +"</span><span class='right'>" + table.status +"</span></h2></div>";
+                txt += " <div class='card-header'><h2><span>Table:" + table.id +"</span></h2></div>";
                 if(table.status == "done" || table.status == "void" || table.status == "vacant"){
                     txt += " <div class='card-body done'>";
                 }

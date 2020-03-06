@@ -6,7 +6,7 @@
             <th style="width:20px;word-wrap:break-word;text-align:center;background:#dee2e6;">Transaction</th>
             <th style="width:20px;word-wrap:break-word;text-align:center;background:#dee2e6;">Status</th>
             <th style="width:20px;word-wrap:break-word;text-align:center;background:#dee2e6;">Table</th>
-            <th style="width:25px;word-wrap:break-word;text-align:center;background:#dee2e6;">Total Amount Purchased</th>
+            <th style="width:250px;word-wrap:break-word;text-align:center;background:#dee2e6;">Total Amount Purchased</th>
             <th style="width:20px;word-wrap:break-word;text-align:center;background:#dee2e6;">In</th>
             <th style="width:20px;word-wrap:break-word;text-align:center;background:#dee2e6;">Out</th>
         </tr>
@@ -17,7 +17,7 @@
                 <td style="width:20px;word-wrap:break-word;text-align:center">{{$table->username}}</td>
                 <td style="width:20px;word-wrap:break-word;text-align:center">{{$table->status}}</td>
                 <td style="width:20px;word-wrap:break-word;text-align:center">{{$table->table_id}}</td>
-                <td style="width:20px;word-wrap:break-word;text-align:center">{{$table->price}}</td>
+                <td style="width:20px;word-wrap:break-word;text-align:right" data-format='[$Php-2] * #,##0.00;-[$Php-2] * #,##0.00_-;_-[$Php-2] * "-"??_-;_-@_-'>{{$table->price}}</td>
                 <td style="width:20px;word-wrap:break-word;text-align:center">{{$table->created_at}}</td>
                 <td style="width:20px;word-wrap:break-word;text-align:center">{{$table->updated_at}}</td>
             </tr>
@@ -36,8 +36,8 @@
                     <td ></td>
                     <td style="width:20px;word-wrap:break-word;text-align:center">{{$order->menu->name}}</td>
                     <td style="width:20px;word-wrap:break-word;text-align:center">{{$order->quantity}}</td>
-                    <td style="width:20px;word-wrap:break-word;text-align:center">{{$order->menu->price}}</td>
-                    <td style="width:20px;word-wrap:break-word;text-align:center">{{$order->quantity * $order->menu->price}}</td>
+                    <td style="width:20px;word-wrap:break-word;text-align:right" data-format='[$Php-2] * #,##0.00;-[$Php-2] * #,##0.00_-;_-[$Php-2] * "-"??_-;_-@_-'>{{$order->menu->price}}</td>
+                    <td style="width:20px;word-wrap:break-word;text-align:right" data-format='[$Php-2] * #,##0.00;-[$Php-2] * #,##0.00_-;_-[$Php-2] * "-"??_-;_-@_-'>{{$order->quantity * $order->menu->price}}</td>
                 </tr>
                 @endif
             @endforeach

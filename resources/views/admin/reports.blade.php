@@ -1,5 +1,13 @@
 @extends('layouts.app')
-
+@section('style')
+td, th{
+    text-align:center!important;
+    padding:10px;
+}
+td.right{
+    display:flex;
+}
+@endsection
 @section('content')
 <div class="filter" style="margin-bottom:20px">
         <label>DATE</label>
@@ -25,7 +33,7 @@
             <td>{{$table->name}}</td>
             <td>{{$table->category['name']}}</td>
             <td>{{$table->orderByDate($start_date, $end_date)->sum('quantity')}}</td>
-            <td>{{($table->price * $table->orderByDate($start_date, $end_date)->sum('quantity'))}}</td>
+            <td class="right"><span>PHP</span> <span style="margin-left:auto;">{{number_format($table->price * $table->orderByDate($start_date, $end_date)->sum('quantity'))}}</span></td>
         </tr>
         @endforeach
     </tbody>

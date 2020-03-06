@@ -40,7 +40,7 @@ class ReportsController extends Controller
     public function sales()
     {
         $from = Carbon::yesterday()->toDateString();
-        $to = Carbon::now()->toDateString();
+        $to = Carbon::now()->addHours(23)->toDateString();
         $table = Transaction::whereBetween('created_at', [$from, $to])->get();
         return view('admin/sales', [
             'tables'=>$table,
@@ -50,6 +50,7 @@ class ReportsController extends Controller
     }
     public function salesDate($from, $to)
     {
+        $to = Carbon::parse($to)->addHours(23)->toDateString();
         $table = Transaction::whereBetween('created_at', [$from, $to])->get();
         return view('admin/sales', [
             'tables'=>$table,
@@ -66,10 +67,11 @@ class ReportsController extends Controller
             'start_date' => $from,
             'end_date' => $to
         ]);
-        return Excel::download($export, 'reports '.$from.'to'. $to.'.xlsx');
+        return Excel::download($export, 'reports '.$from.' to '. $to.'.xlsx');
     }
     public function salesExport($from, $to)
     {
+        $to = Carbon::parse($to)->addHours(23)->toDateString();
         $table = Transaction::whereBetween('created_at', [$from, $to])->get();
         $export = new SalesExport([
             'tables'=>$table,
@@ -77,6 +79,6 @@ class ReportsController extends Controller
             'start_date' => $from,
             'end_date' => $to
         ]);
-        return Excel::download($export, 'sales '.$from.'to'. $to.'.xlsx');
+        return Excel::download($export, 'sales '.$from.' to '. $to.'.xlsx');
     }
 }

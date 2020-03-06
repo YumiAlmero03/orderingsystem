@@ -62,7 +62,7 @@ xmlhttp.onreadystatechange = function(){
 		var myObj = JSON.parse(this. responseText);
 		document.getElementById("stats").innerHTML = "Order Status: "+myObj;
 		document.getElementById("title").innerHTML = myObj;
-		if(myObj == "serving" && myObj == "serving" && myObj == "served"){
+		if(myObj == "serving" || myObj == "serving" || myObj == "served"){
 			window.location.replace('{{route('done', ['id' => $order->id])}}');
 		}
 		if(myObj == "cooking"){

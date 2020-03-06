@@ -12,11 +12,11 @@
 	<thead>
             @include('export/_heading')
     <tr>
-		<th style="width:20px;word-wrap:break-word;text-align:center">Menu ID</th>
-		<th style="width:20px;word-wrap:break-word;text-align:center">Menu</th>
-        <th style="width:20px;word-wrap:break-word;text-align:center">Menu Category</th>
-		<th style="width:20px;word-wrap:break-word;text-align:center">QTY</th>
-		<th style="width:20px;word-wrap:break-word;text-align:center">Total Amount</th>
+		<th style="width:20px;word-wrap:break-word;background:#dee2e6;text-align:center">Menu ID</th>
+		<th style="width:20px;word-wrap:break-word;background:#dee2e6;text-align:center">Menu</th>
+        <th style="width:20px;word-wrap:break-word;background:#dee2e6;text-align:center">Menu Category</th>
+		<th style="width:20px;word-wrap:break-word;background:#dee2e6;text-align:center">QTY</th>
+		<th style="width:20px;word-wrap:break-word;background:#dee2e6;text-align:center">Total Amount</th>
 	</tr>
     </thead>
     <tbody>
@@ -31,7 +31,7 @@
                 <td style="word-wrap:break-word;text-align:center">{{($table->price * $table->order()->sum('quantity'))}}</td>
             @else
                 <td style="word-wrap:break-word;text-align:center">{{$table->orderByDate($start_date, $end_date)->sum('quantity')}}</td>
-                <td style="word-wrap:break-word;text-align:center">{{($table->price * $table->orderByDate($start_date, $end_date)->sum('quantity'))}}</td>
+                <td style="word-wrap:break-word;text-align:right">PHP {{number_format($table->price * $table->orderByDate($start_date, $end_date)->sum('quantity'))}}</td>
             @endif
         </tr>
         @endforeach

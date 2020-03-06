@@ -1,4 +1,13 @@
 @extends('layouts.app')
+@section('style')
+td, th{
+    text-align:center!important;
+    padding:10px;
+}
+td.right, span.right{
+    display:flex;
+}
+@endsection
 
 @section('content')
 <div class="filter">
@@ -28,7 +37,7 @@
                 <td>{{$table->username}}</td>
                 <td>{{$table->status}}</td>
                 <td>{{$table->table_id}}</td>
-                <td>{{$table->price}}</td>
+                <td class="right"><span>PHP</span> <span style="margin-left:auto;">{{number_format($table->price)}}</span></td>
                 <td>{{$table->created_at}}</td>
                 <td>{{$table->updated_at}}</td>
                 <td>
@@ -52,19 +61,19 @@
         </button>
       </div>
       <div class="modal-body">
-      	<table border="0">
+      	<table border="1">
             <tr>
-                <th>Menu</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
+                <th width="150px">Menu</th>
+                <th>QYT</th>
+                <th width="150px">Price</th>
+                <th width="200px">Total</th>
             </tr>
             <tbody id="orderModalOrders">
 
             </tbody>
 	      	<tr>
-	      		<th>Total:</th>
-	      		<td id="orderModalPrice"></td>
+	      		<th colspan="3">Total:</th>
+	      		<td id="orderModalPrice" ></td>
 	      	</tr>
       	</table>
 
@@ -78,6 +87,10 @@
 @section('script')
 
 $(document).ready( function () {
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     $('#search').click(function(){
         start = $('#start_date').val();
         end = $('#end_date').val();
@@ -95,14 +108,14 @@ $(document).ready( function () {
         })
         .done(function( data ) {
             $('span#orderModalUsername').text(data.username);
-            $('td#orderModalPrice').text(data.price);
+            $('td#orderModalPrice').html("<span class='right'><span>PHP</span> <span style='margin-left:auto;'>"+numberWithCommas(data.price) + "</span></span>");
             $.each( data.order, function( i, item ) {
                 if(item.quantity != 0){
                     $( "<tr>" ).appendTo( "#orderModalOrders" );
                     $( "<td>" ).text( item.menu.name ).appendTo( "#orderModalOrders" );
                     $( "<td>" ).text( item.quantity ).appendTo( "#orderModalOrders" );
-                    $( "<td>" ).text( item.menu.price ).appendTo( "#orderModalOrders" );
-                    $( "<td>" ).text( item.menu.price * item.quantity ).appendTo( "#orderModalOrders" );
+                    $( "<td>" ).html( "<span class='right'><span>PHP</span> <span style='margin-left:auto;'>" + numberWithCommas(item.menu.price) + "</span></span></td>").appendTo( "#orderModalOrders" );
+                    $( "<td>" ).html( "<span class='right'><span>PHP</span> <span style='margin-left:auto;'>" + numberWithCommas(item.menu.price * item.quantity) + "</span></span></td>").appendTo( "#orderModalOrders" );
                     $( "</tr>" ).appendTo( "#orderModalOrders" );
                 }
             });

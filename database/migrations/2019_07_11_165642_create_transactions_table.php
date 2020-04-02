@@ -21,6 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->string('status');
             $table->string('table_id');
             $table->string('price')->nullable();
+            $table->string('preptime')->nullable();
             $table->string('orders')->nullable();
             $table->timestamp('order_at')->nullable();
             $table->timestamps();

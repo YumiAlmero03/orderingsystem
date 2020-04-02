@@ -22,11 +22,12 @@ class GenerateController extends Controller
         $table = Table::available()->id;
         $transaction = Transaction::create([
             'username'=> $username,
-            'pass'=> Hash::make($pass),
+            'pass'=> $pass,
             'status'=> 'reserve',
             'table_id'=> $table
         ]);
     	$qr = QrCode::size(100)->generate('http://student-portal.outerhaven.net/qrto/'.encrypt($username).'/'.encrypt($pass));
+
     	return view('generate.qr', [
     		'qr' => $qr,
     		'transaction'=>$transaction,

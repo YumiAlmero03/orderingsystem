@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Carbon;
 use App\Menu;
+use App\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\MenuRequest;
 class MenuController extends Controller
 {
     /**
@@ -15,9 +17,10 @@ class MenuController extends Controller
     // protected $maxAttempts = 3;
     public function index()
     {
-        return view('admin/Menu', ['tables'=>Menu::all()]);
+
+        return view('admin/menu', ['tables'=>Menu::all(),'cats'=>Category::all()]);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,10 +38,24 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MenuRequest $request)
     {
         //
-        $task = Menu::create($request->all());
+        $imageName = time().'.'.$request->pic->getClientOriginalExtension();
+
+        $request->pic->move(public_path('img'), $imageName);
+        $request->pic = $imageName;
+
+        $task = Menu::create([
+            'name'=>$request->name,
+            'desc'=>$request->desc,
+            'price'=>$request->price,
+            'pic'=>$imageName,
+            'prepare_time'=>$request->prepare_time,
+            'feat'=>0,
+            'category_id'=>$request->category_id,
+            'active'=>1]);
+
         return back()->with('success', 'Menu Added');
     }
 
@@ -60,9 +77,9 @@ class MenuController extends Controller
      * @param  \App\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function edit(Menu $menu)
+    public function edit(Menu $menu, $food)
     {
-        //
+        return view('admin/menu-edit', ['menu'=>$this->show($food),'cats'=>Category::all()]);
     }
 
     /**
@@ -72,9 +89,23 @@ class MenuController extends Controller
      * @param  \App\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Menu $menu)
+    public function update(MenuRequest $request, Menu $menu, $food)
     {
-        //
+        $menu = $this->show($food);
+        if($request->pic){
+            $imageName = time().'.'.$request->pic->getClientOriginalExtension();
+            $request->pic->move(public_path('img'), $imageName);
+            $menu->pic = $imageName;
+        }
+
+        //dd($menu);
+        $menu->name = $request->name;
+        $menu->desc = $request->desc;
+        $menu->price = $request->price;
+        $menu->category_id = $request->category_id;
+        $menu->prepare_time = $request->prepare_time;
+        $menu->save();
+        return back()->with('success', 'Menu Updated');
     }
 
     /**

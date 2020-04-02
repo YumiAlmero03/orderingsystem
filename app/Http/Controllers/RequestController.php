@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Request;
+use App\Demand;
 use Illuminate\Http\Request;
 
 class RequestController extends Controller
@@ -36,6 +36,10 @@ class RequestController extends Controller
     public function store(Request $request)
     {
         //
+
+        $task = Demand::create($request->all());
+        return back()->with('success', 'Request Sent');
+
     }
 
     /**
@@ -67,7 +71,7 @@ class RequestController extends Controller
      * @param  \App\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Request $request)
+    public function update(Demand $demand, Request $request)
     {
         //
     }
@@ -78,8 +82,13 @@ class RequestController extends Controller
      * @param  \App\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(Request $request)
     {
         //
+        $id = $request->id;
+        $task = Demand::find($id);
+        Demand::destroy($id);
+        return back()->with('success', 'Request Done');
     }
 }

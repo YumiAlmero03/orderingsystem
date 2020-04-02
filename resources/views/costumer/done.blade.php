@@ -1,5 +1,7 @@
 @extends('costumer.layout')
-
+@section('title')
+  Thank You!
+@endsection
 @section('content')
 <div class="card">
 	<div class="card-header">
@@ -7,8 +9,11 @@
 	</div>
 	<div class="card-body">
 		<p>For additional order or request. you can request to the form below</p>
-		<form method="POST" action="/request" class="form-group">
-			<textarea class="form-control" placeholder="Request Here"></textarea>
+        <form method="POST" action="/request" class="form-group">
+            @csrf
+            <input type="hidden" name="table_id" value="{{$order->table_id}}">
+            <textarea required name="content" class="form-control" placeholder="Request Here"></textarea>
+            <input type="hidden" name="status" value="new">
 			<input type="submit" class="btn btn-outline-secondary" name="submit" value="Request">
 		</form>
 		<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#orderModal">
@@ -16,13 +21,15 @@
 		</button>
 	</div>
 	<div class="card-footer">
-		<form id="table-status" method="POST" action="/status-change">
-			<input type="hidden" name="id" value="{{$order->id}}">
+        <form id="table-status" method="POST" action="/status-change">
+            @csrf
+            <input type="hidden" name="id" value="{{$order->id}}">
+
 			<a href=""><button type="submit" class="btn btn-primary">Bill-Out</button></a>
 			<input type="hidden" name="status" value="billout">
 		</form>
-		You can also participate in our survey
-		<a href=""><button class="btn btn-outline-primary">Survey</button></a>
+				@include('costumer._survey')
+
 	</div>
 </div>
 <!-- Modal -->
@@ -57,7 +64,7 @@
 	      		<td>{{$order->price}}</td>
 	      	</tr>
       	</table>
-      	
+
       </div>
       <div class="modal-footer">
       </div>

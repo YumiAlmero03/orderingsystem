@@ -19,9 +19,10 @@ class CreateMenusTable extends Migration
             $table->string('desc')->nullable();
             $table->decimal('price', 5, 2);
             $table->string('pic')->default('FOOD.jpg');
-            $table->boolean('feat');
-            $table->string('category_id');
-            $table->boolean('active');
+            $table->boolean('feat')->default(0);
+            $table->string('category_id')->default(1);
+            $table->string('prepare_time')->default(1);
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }

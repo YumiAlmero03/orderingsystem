@@ -15,8 +15,8 @@ class CreateTablesTable extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('place');
-            $table->string('status');
+            $table->string('place')->nullable();
+            $table->string('status')->default('vacant');
             $table->timestamps();
         });
     }

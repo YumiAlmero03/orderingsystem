@@ -5,13 +5,10 @@ window._ = require('lodash');
  * for JavaScript based Bootstrap features such as modals and tabs. This
  * code may be modified to fit the specific needs of your application.
  */
-
-try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap');
-} catch (e) {}
+window.Popper = require('popper.js').default;
+window.$ = require('jquery');
+window.dt =require( 'datatables.net' );
+require('bootstrap');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

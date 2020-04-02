@@ -10644,3 +10644,7 @@ a.text-dark:focus {
   }
 }
 
+.dataTables_processing {
+  display: none !important;
+}
+

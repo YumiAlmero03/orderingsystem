@@ -1,5 +1,7 @@
 @extends('costumer.layout')
-
+@section('title')
+	Pick Your Order
+@endsection
 @section('content')
 	<form method="POST" action="/preparing">
 		@csrf
@@ -16,8 +18,9 @@
 		<h2>Total Price: <span class="price-order"></span></h2>
 
 		<div class="accordion" id="accordionExample">
-			<div class="card">
-				@if($feats->count())
+			<div class="card menu-cat">
+				@if($feats)
+                
 			  	<a class="btn-link btn order-category btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapsefeat" aria-expanded="true" aria-controls="collapsefeat">
 				    <div class="card-header" id="headingfeat">
 				      <h2 class="mb-0">
@@ -53,6 +56,8 @@
 										<input type="hidden" name="order['f{{$feat->id}}'][category_id]" value="0">
 										<input type="hidden" class="price" value="{{$feat->price}}">
 										<input type="hidden" name="order['f{{$feat->id}}'][menu_id]" value="{{$feat->id}}">
+
+		                                <input type="hidden" name="order['f{{$feat->id}}'][updated_at]" value="{{Carbon\Carbon::now()}}">
 										<input class="form-control orders" type="text" name="order['f{{$feat->id}}'][quantity]" id="{{$feat->name}}_{{$feat->id}}" value="@if($reorder==1) {{$feat->getQuantity($id->id, 0)->quantity}}
 										@else 0
 									@endif">
@@ -73,7 +78,7 @@
 		    </div>
 		  @foreach ($menus as $menu)
 		  @if($menu->menus->count() )
-		  <div class="card">
+		  <div class="card menu-cat" >
 			<a class="btn-link btn order-category btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse{{$menu->id}}" aria-expanded="true" aria-controls="collapse{{$menu->id}}">
 			    <div class="card-header" id="heading{{$menu->id}}">
 			      <h2 class="mb-0">
@@ -108,6 +113,8 @@
 									<input type="hidden" name="order[{{$menu->id}}{{$order->id}}][feature]" value="0">
 									<input type="hidden" name="order[{{$menu->id}}{{$order->id}}][category_id]" value="{{$menu->id}}">
 									<input type="hidden" class="price" value="{{$order->price}}">
+		                                <input type="hidden" name="order[{{$menu->id}}{{$order->id}}][updated_at]" value="{{Carbon\Carbon::now()}}">
+
 									<input type="hidden" name="order[{{$menu->id}}{{$order->id}}][menu_id]" value="{{$order->id}}">
 									<input class="form-control orders" type="text" name="order[{{$menu->id}}{{$order->id}}][quantity]" id="{{$menu->name}}_{{$order->id}}" value="@if($reorder==1) {{$order->getQuantity($id->id, $menu->id)->quantity}}
 									@else 0

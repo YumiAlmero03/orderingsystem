@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://8002-e95be19b-2f27-4bd8-8195-659118abe105.ws-ap0.gitpod.io/'),
+    'url' => env('APP_URL', 'https://8001-e95be19b-2f27-4bd8-8195-659118abe105.ws-ap01.gitpod.io/'),
 
     'asset_url' => env('ASSET_URL'),
 

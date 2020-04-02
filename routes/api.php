@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::middleware('api')->get('status/{id}', 'ApiController@costumerStatus')->name('apistat');
 Route::middleware('api')->get('costumers', 'ApiController@getCostumers')->name('apicostumers');
+Route::middleware('api')->get('request-list', 'ApiController@getRequest')->name('apirequest');
+Route::middleware('api')->get('costumers/{id}', 'ApiController@getCostumer')->name('apicostumer');
 // Route::resource('/cruds', 'CrudsController', [
   // 'except' => ['edit', 'show', 'store']
 // ]);

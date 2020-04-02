@@ -16,26 +16,34 @@ class TransactionController extends Controller
 {
     public function stageone(Request $request)
     {
+
         $transaction = Transaction::where('username', $request->username)->first();
-        if ($transaction->exists()){
-            if ($transaction->status == "done" ) {
-                $transaction->changeStatus('register');
+
+
+        if ($transaction){
+
+            if ($transaction->status == "done" || $transaction->status == "void" ) {
+                $fail = 'Code is Expired';
+            } else {
+                if($request->pass === $transaction->pass){
+                    return $this->toMenu($transaction);
+                } else{
+                    $fail = 'Incorrect Password';
+                }
             }
-            if(Hash::check($request->pass, $transaction->pass)){
-                return $this->toMenu($transaction);
-            }
-            $fail = 'Incorrect Password';
+        } else{
+            $fail = 'Username does not exists';
         }
-        $fail = 'Username does not exists';
+
         return back()->with('error', $fail);
     }
-    public function qrRetrive($userid,$pass)
+    public function qrRetrive($userid,$pass,$test)
     {
-        $userid = decrypt($userid);
-        $pass = decrypt($pass);
+        $userid = $userid;
+        $pass = $pass;
         $transaction = Transaction::where('username', $userid)->first();
-        if ($transaction->exists()){
-            if (Hash::check($pass, $transaction->pass)) {
+        if ($transaction){
+            if ($pass === $transaction->pass) {
                 if ($transaction->status == "done" ) {
                     $transaction->changeStatus('register');
                 }
@@ -43,13 +51,18 @@ class TransactionController extends Controller
             }
         }
         $fail = 'Error: Change QR';
-        return redirect('/')->with('error', $fail);
+        return view('costumer/reserve')->with('error', $fail);
     }
     public function toMenu($transaction)
     {
         if ($transaction->status === "reordering" ) {
             return $this->toReorder($transaction);
-        } elseif ($transaction->status === "ordering" || $transaction->status === "register"|| $transaction->status === "reserve") {
+        } elseif ($transaction->status === "ordering" || $transaction->status === "register"  || $transaction->status === "manual" || $transaction->status === "reserve") {
+                //dd($transaction) ;
+
+            if ($transaction->preptime != NULL) {
+                return $this->toReorder($transaction);
+            }
             return $this->order($transaction);
         } elseif ($transaction->status === "done" ) {
             $fail = 'Transaction is Completed';
@@ -64,6 +77,7 @@ class TransactionController extends Controller
         $feats = Menu::where('feat', 1)->get();
         $transaction->changeStatus('reordering');
         $reorder = 1;
+
         return view('costumer/menu', ['menus'=>$menus, 'id'=>$transaction, 'feats'=>$feats, 'reorder'=> $reorder]);
     }
     public function reorder(Request $request)
@@ -85,35 +99,50 @@ class TransactionController extends Controller
         //
         $order = Transaction::find($request->order_id);
         $orders = [];
+        $time = 0;
+        $date = Carbon\Carbon::now();
         foreach ($request->order as $key => $value) {
             array_push($orders, $value);
-
             if (isset($value['id'])) {
                 $test = Order::updateOrCreate(['id'=>(int)$value['id']],$value);
             } else {
                 $test = Order::insert($value);
             }
+            if($value['quantity'] != 0){
+                $test =Menu::find($value['menu_id']);
+                $time .= intval($value['quantity']) * intval($test->prepare_time);
+            }
         }
         //
-
-
         $order->price = $request->price;
-        $date = Carbon\Carbon::now();
         $order->order_at = $date;
+        $order->preptime = intval($time);
         $order->changeStatus('recording');
+        
+        if($order->status === 'manual'){
+            return redirect()->route('home');            
+        }
+        return redirect()->route('prep', ['id' => $order->id]);
+    }
+    public function prep($id){
+        $order = Transaction::find($id);
         return view('costumer/prep', ['order' => $order]);
     }
-
     public function stagethree($id)
     {
         //
         $order = Transaction::find($id);
         return view('costumer/done', ['order' => $order]);
     }
+    public function void($id)
+    {
+        $trans = Transaction::find($id);
+        $trans->changeStatus('void');
+        return back()->with('error', 'Transaction Voided');
+    }
 
     public function test()
     {
         return"test";
     }
-
 }

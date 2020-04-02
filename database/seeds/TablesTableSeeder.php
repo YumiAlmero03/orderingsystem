@@ -14,11 +14,11 @@ class TablesTableSeeder extends Seeder
         //
         DB::table('tables')->insert([
             'place' => 'left',
-        	'status' => 'done'
+        	'status' => 'vacant'
         ]);
         DB::table('tables')->insert([
-            'status' => 'done',
-        	'place' => 'corner'
+            'status' => 'vacant',
+        	'place' => 'vacant'
         ]);
     }
 }

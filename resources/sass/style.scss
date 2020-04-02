@@ -9,7 +9,9 @@
 .order-category h2{
 	text-transform: capitalize;
 }
-
+title{
+	text-transform: uppercase;
+}
 .order-category .card-header{
 	background: none;
     border: none;
@@ -26,4 +28,10 @@
 .box{
 	max-width: 1000px;
 	width: 100%;
+}
+.menu-cat{
+	border: none;
+	.order-category{
+		border:#000 1px solid;
+	}
 }

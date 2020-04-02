@@ -8,20 +8,24 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Admin') }}</title>
-
+    <link rel="icon" type="image/png" href="{{asset('img/icon.png')}}" />
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <style>
+        @yield('style')
 
+    </style>
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="ap">
+    <input type="hidden" name="csrf" id="csrf" value="{{ csrf_token() }}">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ route('home') }}">
+                    <img width="80px" src="{{asset('img/icon.png')}}">{{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -40,7 +44,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                            
+
                         @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('table.index') }}">{{ __('Table') }}</a>
@@ -50,6 +54,12 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('category.index') }}">{{ __('Category') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('sales') }}">{{ __('Sales') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('report') }}">{{ __('Report') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -75,13 +85,18 @@
         </nav>
 
         <main class="py-4">
-            <div class="container-fluid center">
+        @include('layouts/message')
+            <div class="container center">
                 <div class="box center">
-            @yield('content')
+                    @yield('content')
                 </div>
             </div>
         </main>
     </div>
 </body>
 <script src="{{ mix('js/app.js') }}"></script>
+<script>
+@yield('script')
+
+</script>
 </html>

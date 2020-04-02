@@ -41,7 +41,9 @@ class TableController extends Controller
     public function store(Request $request)
     {
         //
-        $task = Table::create($request->all());
+        $task = Table::orderBy('id', 'DESC')->take(1)->first();
+        $id = intval($task->id) + 1;
+        $create = Table::create(['id'=>$id]);
         return back()->with('success', 'Table Added');
     }
 
@@ -89,9 +91,7 @@ class TableController extends Controller
     public function destroy(Request $request)
     {
         //
-        $id = $request->id;
-        $task = Table::find($id);
-        Table::destroy($id);
+        $task = Table::orderBy('id', 'DESC')->take(1)->delete();
         return back()->with('success', 'Table Deleted');
     }
 }

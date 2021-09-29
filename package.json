@@ -30,7 +30,7 @@
         "@progress/kendo-theme-material": "^3.4.0",
         "@progress/kendo-vue-grid": "^0.3.7",
         "@progress/kendo-vue-intl": "^0.3.7",
-        "datatables.net": "^1.10.20",
+        "datatables.net": "^1.11.3",
         "datatables.net-dt": "^1.10.20",
         "hamoni-sync": "^1.1.1",
         "laue": "^0.2.1",
